@@ -1,0 +1,36 @@
+Part A-- NPM project creation
+
+npx express-generator app
+
+
+Part B-- MYSQL Server 
+
+docker stop dishfu-container && docker rm dishfu-container  && docker image rm dishfu-image && docker image prune
+docker image build --file Dockerfile -t dishfu-image .
+
+docker stop dishfu-container && docker rm dishfu-container 
+
+MAIN_NET="33.33.33"
+MAIN_IP="33.33.33.254"
+docker network create \
+    --driver=bridge \
+    --subnet=${MAIN_NET}.0/16 \
+    --ip-range=${MAIN_NET}.0/24 \
+    --gateway=${MAIN_IP} \
+    network_dishfu &> /dev/null
+
+/* --- assigned dynamic password --$(openssl rand -base64 21)-*/
+docker run -v "$PWD/data":/var/lib/mysql -v "$PWD/app":/var/app \
+    -v "$PWD/log":/var/log \
+    -v "$PWD/docker-entrypoint-initdb.d/":/docker-entrypoint-initdb.d/ \
+    -p 3030:3000 -p 3306:3306 \
+    --network network_dishfu --restart on-failure \
+    --name dishfu-container -e MYSQL_ROOT_PASSWORD=$(openssl rand -base64 32) -d dishfu-image
+
+docker exec -it dishfu-container bash
+docker restart dishfu-container
+
+Part B-- phpmyadmin -- tools
+docker container  stop mysqladmin-container
+docker container  rm mysqladmin-container
+docker run --name mysqladmin-container --network network_dishfu -d -e PMA_HOST=33.33.33.254 -p 8083:80 phpmyadmin
