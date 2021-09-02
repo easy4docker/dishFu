@@ -4,3 +4,4 @@
 /docker-entrypoint-initdb.d/init.sql
 /app/config
 /log/
+/userData/

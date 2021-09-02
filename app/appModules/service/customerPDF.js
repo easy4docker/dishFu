@@ -18,7 +18,7 @@ class CustomerPDF {
   run() {
     const me = this;
     const fnDoc = __dirname + '/tpl/mailQrCodeDoc.html';
-    const fnPDF = __dirname  + '/userData/mailQrCodeDoc.pdf';
+    const fnPDF = me.config.dataFolder  + '/mailQrCodeDoc.pdf';
     const linkUrl = 'http://192.168.86.126:3000/scanSignin/';
 
     me.QRCode.toDataURL(linkUrl , { 

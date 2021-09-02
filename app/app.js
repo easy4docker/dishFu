@@ -9,11 +9,15 @@ var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/api');
 var pdfRouter = require('./routes/pdf');
 
-var app = express();
+const app = express();
 
+/* --- dishFu setting -->-*/
 app.set('config', {
-  root: __dirname
+  root: __dirname,
+  dataFolder: path.join(__dirname, '../userData')
 })
+const fs = require('fs');
+fs.mkdir(app.get('config').dataFolder, (err) => {});
 
 app.all('*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -21,6 +25,8 @@ app.all('*', function(req, res, next) {
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   next();
 });
+
+/* -<-- dishFu setting ---*/
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
