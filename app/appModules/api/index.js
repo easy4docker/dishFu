@@ -14,6 +14,7 @@ module.exports = (req, res, next)=> {
     case 'application':
     case 'community':
     case 'auth':
+    case 'ad':
     case 'menu':
       standardModule(req.params.module, req, res, next);
       /*
