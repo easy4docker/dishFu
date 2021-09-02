@@ -6,7 +6,7 @@ module.exports = class App extends tools {
         const p = __dirname.split('/cronJobs/')
         this.config = {
             root : p[0],
-            isDocker: /^\/var\/app\//.test(p[0]) ? true : false
+            isDocker: /^\/var/.test(p[0]) ? true : false
         }
         this.dbCfg = require(this.config.root + '/app/config/mysql.json').devDB;
         this.mysql = require('mysql');
