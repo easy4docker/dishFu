@@ -13,6 +13,7 @@ module.exports = (req, res, next)=> {
   switch (req.params.module) {
     case 'application':
     case 'community':
+    case 'auth':
     case 'menu':
       standardModule(req.params.module, req, res, next);
       /*
