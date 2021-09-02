@@ -15,20 +15,34 @@ class CustomerPDF {
     var func = new Function(...Object.keys(vars),  "return `"+ str +"`;")
     return func(...Object.values(vars));
   }
-  run() {
+  getRecord(callback) {
+    const me = this;
+    const connection = me.mysql.createConnection(me.cfg);
+    connection.connect();
+    const sql = "SELECT * FROM `application`";
+    connection.query(sql, function (err, result, fields) {
+      if (err) {
+        me.onError(err.message)
+      } else {
+        callback(result);
+      }
+    });
+    connection.end();
+  }
+  sendPDF(hashCode) {
     const me = this;
     const fnDoc = __dirname + '/tpl/mailQrCodeDoc.html';
-    const fnPDF = me.config.dataFolder  + '/mailQrCodeDoc.pdf';
-    const linkUrl = 'http://192.168.86.126:3000/scanSignin/';
+    const fnPDF = me.config.dataFolder  + '/' + (!hashCode ? 'mailQrCodeDoc.pdf' : (hashCode + '.pdf'));
+    const linkUrl = 'http://192.168.86.126:3000/scanSignin/' + hashCode;
 
-    me.QRCode.toDataURL(linkUrl , { 
-        width:256,
-        type: 'image/png',
-        quality: 1.0,
-        color: {
-            dark: '#000000',  
-            light: '#0000'
-        }
+    me.QRCode.toDataURL(linkUrl, { 
+      width:256,
+      type: 'image/png',
+      quality: 1.0,
+      color: {
+          dark: '#000000',  
+          light: '#0000'
+      }
     }, (err, str)=>{
         me.fs.readFile(fnDoc, 'utf-8', (err, doc)=> {
           try {
@@ -41,8 +55,6 @@ class CustomerPDF {
               'left': '0.5in'
             }};
             me.pdf.create(html, options).toFile(fnPDF, function(err, res) {
-              // if (err) return console.log(err);
-              // console.log(res); // { filename: '/app/businesscard.pdf' }
               me.res.sendFile(fnPDF);
             });
             
@@ -52,9 +64,18 @@ class CustomerPDF {
         });
     });
   }
-  onError() {
+  run() {
     const me = this;
-    me.res.send({status: 'failure',  message: 'Action Error!'});
+    me.getRecord(
+      (rec) => {
+        me.sendPDF((!rec || !rec[0]) ? '' : rec[0].publisher);
+      }
+    ); 
+    return true;
+  }
+  onError(message) {
+    const me = this;
+    me.res.send({status: 'failure',  message: message});
   }
 }
 module.exports  = CustomerPDF;
