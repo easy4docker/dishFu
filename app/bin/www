@@ -21,6 +21,28 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
+
+/**
+ * Socket io section.
+ */
+
+ const io = require('socket.io')(server, { cors: { origin: '*', methods: ["GET", "POST"] } });
+ io.on('connection', () => { 
+  console.log('connect -- socket---') 
+  /* … */ });
+
+  const chat = io.of("/dishFu");
+chat.on("connection", (socket) => {
+  console.log('connect -- socket-111--') 
+    socket.on('transfer', (target_socket, from_socket, data) => {
+        chat.to('/dishFu#' + target_socket).emit('afterTransfer', from_socket, data);
+    });
+    socket.on('forceDisconnect', (target_socket, from_socket, data) => {
+        socket.disconnect();
+    });
+    socket.on("disconnect", () => {
+    });
+});
 /**
  * Listen on provided port, on all network interfaces.
  */
@@ -28,6 +50,8 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+
 
 /**
  * Normalize a port into a number, string, or false.
