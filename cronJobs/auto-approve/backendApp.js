@@ -21,7 +21,9 @@ module.exports = class App extends tools {
           if (err) {
             console.log({status: 'failure', message:err.message});
           } else {
+            if (result.length) {
               me.insertProcess(result);
+            }
           }
         });
         connection.end();
@@ -51,21 +53,23 @@ module.exports = class App extends tools {
                 console.log({status: 'failure', message:err.message});
             } else {
               console.log({status: 'success', data: result});
-              me.cleanProcessed(cleanList)
+              if (cleanList.length) {
+                me.cleanProcess(cleanList)
+              }
             }
           });
         connection.end();
     }
-    cleanProcessed(v) {
+    cleanProcess(v) {
         const me = this;
         const connection = me.mysql.createConnection(me.dbCfg);
         connection.connect();
         const sql = "UPDATE `application` SET `status` = 1 WHERE `id` IN (" + v.join(',') + ")";
-        connection.query(sql, [values], function (err, result) {
+        connection.query(sql, function (err, result) {
             if (err) {
-                console.log({status: 'failure', message:err.message});
+                console.log('cleanProcess error =>', err.message);
             } else {
-              console.log({status: 'success', data: result});
+              console.log('cleanProcess success =>', result);
             }
           });
         connection.end();
