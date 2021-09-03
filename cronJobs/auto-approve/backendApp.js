@@ -16,20 +16,21 @@ module.exports = class App extends tools {
         const me = this;
         const connection = me.mysql.createConnection(me.dbCfg);
         connection.connect();
-        const sql = "SELECT * FROM `application`";
+        const sql = "SELECT * FROM `application` WHERE `status` = 0 AND `type` = 'foodie' limit 100";
         connection.query(sql, function (err, result) {
           if (err) {
             console.log({status: 'failure', message:err.message});
           } else {
-              me.process(result);
+              me.insertProcess(result);
           }
         });
         connection.end();
         
     }
-    process(v) {
+    insertProcess(v) {
         const values =[];
         const fields = ['authCode', 'address', 'description', 'roles', 'specialFoodie', 'created', 'status'];
+        const cleanList = [];
         for (let i = 0; i < v.length; i++ ) {
             values.push([
                 md5(v[i].address), 
@@ -39,11 +40,27 @@ module.exports = class App extends tools {
                 new Date(),
                 0
             ]);
+            cleanList.push(v[i].id);
         }
         const me = this;
         const connection = me.mysql.createConnection(me.dbCfg);
         connection.connect();
         const sql = "INSERT INTO authUsers (`" + fields.join('`,`') + "`) VALUES ?";
+        connection.query(sql, [values], function (err, result) {
+            if (err) {
+                console.log({status: 'failure', message:err.message});
+            } else {
+              console.log({status: 'success', data: result});
+              me.cleanProcessed(cleanList)
+            }
+          });
+        connection.end();
+    }
+    cleanProcessed(v) {
+        const me = this;
+        const connection = me.mysql.createConnection(me.dbCfg);
+        connection.connect();
+        const sql = "UPDATE `application` SET `status` = 1 WHERE `id` IN (" + v.join(',') + ")";
         connection.query(sql, [values], function (err, result) {
             if (err) {
                 console.log({status: 'failure', message:err.message});
