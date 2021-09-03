@@ -30,10 +30,9 @@ docker exec -it dishfu-container bash
 docker restart dishfu-container
 
 
-PART C --- cronJobs
+PART C --- cronJobsmp
 
 1. auto-approve
     mkdir auto-approve
     cd auto-approve
-    npm init -> create package.json
-    
+    npm init -> create package.jsoncron 
