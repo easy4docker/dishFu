@@ -19,7 +19,7 @@ class CustomerPDF {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
     connection.connect();
-    const sql = "SELECT * FROM `application`";
+    const sql = "SELECT * FROM `authUsers`";
     connection.query(sql, function (err, result, fields) {
       if (err) {
         me.onError(err.message)
@@ -35,6 +35,8 @@ class CustomerPDF {
     const fnPDF = me.config.dataFolder  + '/' + (!hashCode ? 'mailQrCodeDoc.pdf' : (hashCode + '.pdf'));
     const linkUrl = 'http://192.168.86.126:3000/scanSignin/' + hashCode;
 
+
+
     me.QRCode.toDataURL(linkUrl, { 
       width:256,
       type: 'image/png',
@@ -44,7 +46,9 @@ class CustomerPDF {
           light: '#0000'
       }
     }, (err, str)=>{
+
         me.fs.readFile(fnDoc, 'utf-8', (err, doc)=> {
+
           try {
             const html = me.tpl(doc, {linkUrl: linkUrl, qrCode : str});
             const options = { format: 'A4', 
@@ -54,7 +58,10 @@ class CustomerPDF {
               'bottom': '0.5in',
               'left': '0.5in'
             }};
-            me.pdf.create(html, options).toFile(fnPDF, function(err, res) {
+
+            me.pdf.create(html, options).toFile(fnPDF, (err, res) => {
+             // me.res.send( res);
+             // return true;
               me.res.sendFile(fnPDF);
             });
             
@@ -68,7 +75,7 @@ class CustomerPDF {
     const me = this;
     me.getRecord(
       (rec) => {
-        me.sendPDF((!rec || !rec[0]) ? '' : rec[0].publisher);
+        me.sendPDF((!rec || !rec[0]) ? '' : rec[0].authCode);
       }
     ); 
     return true;
