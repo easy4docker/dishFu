@@ -1,2 +1,2 @@
 #! /bin/sh
-echo `dirname $(realpath $0)`
+echo "$(realpath $0)"
