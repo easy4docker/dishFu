@@ -32,11 +32,7 @@ class CustomerPDF {
   sendPDF(hashCode) {
     const me = this;
     const fnDoc = __dirname + '/tpl/mailQrCodeDoc.html';
-    const fnPDF = me.config.dataFolder  + '/' + (!hashCode ? 'mailQrCodeDoc.pdf' : (hashCode + '.pdf'));
     const linkUrl = 'http://192.168.86.126:3000/scanSignin/' + hashCode;
-
-
-
     me.QRCode.toDataURL(linkUrl, { 
       width:256,
       type: 'image/png',
@@ -48,23 +44,15 @@ class CustomerPDF {
     }, (err, str)=>{
 
         me.fs.readFile(fnDoc, 'utf-8', (err, doc)=> {
-
           try {
             const html = me.tpl(doc, {linkUrl: linkUrl, qrCode : str});
-            const options = { format: 'A4', 
-            'border': {
-              'top': '0.5in',            // default is 0, units: mm, cm, in, px
-              'right': '0.5in',
-              'bottom': '0.5in',
-              'left': '0.5in'
-            }};
-
-            me.pdf.create(html, options).toFile(fnPDF, (err, res) => {
-             // me.res.send( res);
-             // return true;
-              me.res.sendFile(fnPDF);
+            const htmlFn = '/var/dishfuPDF/input/' + hashCode + '.html';
+            const pdfFn = '/var/dishfuPDF/output/' + hashCode + '.html.pdf';
+            me.fs.writeFile(htmlFn, html, (err, doc)=> {
+              setTimeout(()=>{
+                me.res.sendFile(pdfFn);
+              }, 2000);
             });
-            
           } catch (err) {
             me.res.send(err.message + '=>' + doc);
           }

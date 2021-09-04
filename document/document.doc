@@ -20,9 +20,10 @@ docker network create \
     --gateway=${MAIN_IP} \
     network_dishfu &> /dev/null
 
+    
 
 docker run -v "$PWD/cronJobs":/var/cronJobs -v "$PWD/app":/var/app -v "$PWD/log":/var/log \
-    -p 3001:3000  \
+    -v $(dirname $PWD)/dishfuPDF/_cronPDFData:/var/dishfuPDF  -p 3001:3000  \
     --network network_dishfu --restart on-failure \
     --name dishfu-container -d dishfu-image
 
