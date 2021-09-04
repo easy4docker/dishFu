@@ -3,10 +3,9 @@ BASEDIR=$(dirname "$0")
 ROOTDIR="$(PWD)"
 FULLDIR="$(PWD)/${BASEDIR}"
 
-docker stop dishfu-container && docker rm dishfu-container  && docker image rm dishfu-image && docker image prune -f
-
 cd ${FULLDIR}
 
+docker stop dishfu-container && docker rm dishfu-container  && docker image rm dishfu-image && docker image prune -f
 docker image build --file ${FULLDIR}/Dockerfile -t dishfu-image .
 
 MAIN_NET="33.33.33"
