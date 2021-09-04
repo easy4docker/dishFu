@@ -1,2 +1,3 @@
 #! /bin/sh
-echo "$(realpath $0)"
+BASEDIR=$(dirname "$0")
+echo "$(PWD)/ASEDIR"
