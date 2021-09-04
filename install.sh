@@ -1,3 +1,3 @@
 #! /bin/sh
 BASEDIR=$(dirname "$0")
-ROOTDIR =$(PWD)/${BASEDIR}
+ROOTDIR ="$(PWD)/${BASEDIR}"
