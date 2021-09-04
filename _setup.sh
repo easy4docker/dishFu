@@ -3,9 +3,6 @@ BASEDIR=$(dirname "$0")
 ROOTDIR="$(PWD)"
 FULLDIR="$(PWD)/${BASEDIR}"
 
-echo $ROOTDIR
-echo $FULLDIR
-
 docker stop dishfu-container && docker rm dishfu-container  && docker image rm dishfu-image && docker image prune -f
 docker image build --file ${FULLDIR}/Dockerfile -t dishfu-image .
 
