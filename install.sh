@@ -1,6 +1,8 @@
 #! /bin/sh
 BASEDIR=$(dirname "$0")
-ROOTDIR="$(PWD)/${BASEDIR}"
+ROOTDIR="$(PWD)"
+FULLDIR="$(PWD)/${BASEDIR}"
+#/${BASEDIR}"
 
-echo $BASEDIR
 echo $ROOTDIR
+echo $FULLDIR
