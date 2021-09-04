@@ -21,7 +21,7 @@ class Auth {
           me.res.send({status: 'success', data: {
             authCode : result[0].authCode,
             roles : result[0].roles.split(','),
-            address : result[0].Address,
+            address : result[0].address,
             description : result[0].desc
           }
           });
