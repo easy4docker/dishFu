@@ -4,6 +4,8 @@ ROOTDIR="$(PWD)"
 FULLDIR="$(PWD)/${BASEDIR}"
 
 cd ${FULLDIR}
+mkdir -p ${FULLDIR}/app/config
+cp ${ROOTDIR}/config/app/config.json ${FULLDIR}/app/config
 
 docker stop dishfu-container && docker rm dishfu-container  && docker image rm dishfu-image
 # ---  && docker image prune -f
