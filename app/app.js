@@ -34,7 +34,7 @@ app.use('/users', usersRouter);
 app.use('/api', apiRouter);
 app.use('/pdf', pdfRouter);
 
-// app.use('/', express.static('public/build/'))
+app.use('/', express.static('public/build/'))
 app.use(function(req, res, next) {
   res.sendFile(path.join(__dirname, 'public/build', 'index.html'));
 });
