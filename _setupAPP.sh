@@ -19,7 +19,10 @@ docker network create \
     --gateway=${MAIN_IP} \
     network_dishfu &> /dev/null
 
-mkdir -p ${ROOTDIR}/_shared
+mkdir -p ${ROOTDIR}/_shared/PDF/input
+mkdir -p ${ROOTDIR}/_shared/PDF/output
+mkdir -p ${ROOTDIR}/_shared/PDF/done
+mkdir -p ${ROOTDIR}/_shared/PDF/failed
 
 docker run -v "${FULLDIR}/cronJobs":/var/cronJobs -v "${FULLDIR}/app":/var/app -v "${FULLDIR}/log":/var/log \
     -v "${ROOTDIR}/_shared":/var/_shared  -p 3001:3000  \
