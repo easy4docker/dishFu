@@ -1,6 +1,6 @@
 #! /bin/sh
-FULLDIR=$(PWD)
-ROOTDIR=$(dirname $(dirname $(PWD)))
+FULLDIR=$(pwd)
+ROOTDIR=$(dirname $(dirname $(pwd)))
 
 cd ${FULLDIR}
 mkdir -p ${FULLDIR}/app/config
