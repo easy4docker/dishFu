@@ -36,7 +36,7 @@ app.use('/pdf', pdfRouter);
 
 // app.use('/', express.static('public/build/'))
 app.use(function(req, res, next) {
-  res.sendFile(path.join(__dirname, 'public/build', 'index.html'));
+  res.send(path.join(__dirname, 'public/build', 'index.html'));
 });
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
