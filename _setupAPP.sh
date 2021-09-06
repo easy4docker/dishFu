@@ -1,13 +1,10 @@
 #! /bin/sh
 FULLDIR=$(PWD)
 ROOTDIR=$(dirname $(dirname $(PWD)))
-echo $FULLDIR
-echo $ROOTDIR
-exit 1
 
 cd ${FULLDIR}
 mkdir -p ${FULLDIR}/app/config
-cp ${ROOTDIR}/config/app/config.json ${FULLDIR}/app/config/mysql.json
+cp ${ROOTDIR}/config/app/mysql.json ${FULLDIR}/app/config/mysql.json
 
 docker stop dishfu-container && docker rm dishfu-container  && docker image rm dishfu-image
 # ---  && docker image prune -f
@@ -22,7 +19,9 @@ docker network create \
     --gateway=${MAIN_IP} \
     network_dishfu &> /dev/null
 
+mkdir -p ${ROOTDIR}/_shared
+
 docker run -v "${FULLDIR}/cronJobs":/var/cronJobs -v "${FULLDIR}/app":/var/app -v "${FULLDIR}/log":/var/log \
-    -v ${ROOTDIR}/_services/dishfuPDF/_cronPDFData:/var/dishfuPDF  -p 3001:3000  \
+    -v "${ROOTDIR}/_shared":/var/_shared  -p 3001:3000  \
     --network network_dishfu --restart on-failure \
     --name dishfu-container -d dishfu-image
