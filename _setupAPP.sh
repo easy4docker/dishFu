@@ -1,7 +1,9 @@
 #! /bin/sh
-BASEDIR=$(dirname "$0")
-ROOTDIR="$(PWD)"
-FULLDIR="$(PWD)/${BASEDIR}"
+FULLDIR=$(PWD)
+ROOTDIR=$(dirname $(dirname $(PWD)))
+echo $FULLDIR
+echo $ROOTDIR
+exit 1
 
 cd ${FULLDIR}
 mkdir -p ${FULLDIR}/app/config
