@@ -29,7 +29,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/', indexRouter);
-app.use('/', express.static('public'))
+app.use('/', express.static('public/build'))
 app.use('/users', usersRouter);
 app.use('/api', apiRouter);
 app.use('/pdf', pdfRouter);
