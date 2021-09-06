@@ -46,8 +46,8 @@ class CustomerPDF {
         me.fs.readFile(fnDoc, 'utf-8', (err, doc)=> {
           try {
             const html = me.tpl(doc, {linkUrl: linkUrl, qrCode : str});
-            const htmlFn = '/var/dishfuPDF/input/' + hashCode + '.html';
-            const pdfFn = '/var/dishfuPDF/output/' + hashCode + '.html.pdf';
+            const htmlFn = '/var/_shared/PDF/input/' + hashCode + '.html';
+            const pdfFn = '/var/_shared/PDF/output/' + hashCode + '.html.pdf';
             me.fs.writeFile(htmlFn, html, (err, doc)=> {
               setTimeout(()=>{
                 me.res.sendFile(pdfFn);
