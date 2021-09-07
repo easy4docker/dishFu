@@ -32,7 +32,7 @@ class CustomerPDF {
   sendPDF(hashCode) {
     const me = this;
     const fnDoc = __dirname + '/tpl/mailQrCodeDoc.html';
-    const linkUrl = 'http://142.93.73.66/:3001/scanSignin/' + hashCode;
+    const linkUrl = 'http://142.93.73.66:3001/scanSignin/' + hashCode;
     me.QRCode.toDataURL(linkUrl, { 
       width:256,
       type: 'image/png',
