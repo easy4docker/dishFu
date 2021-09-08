@@ -4,6 +4,8 @@ ROOTDIR=$(dirname $(dirname $(pwd)))
 
 cd ${FULLDIR}
 mkdir -p ${FULLDIR}/app/config
+mkdir -p ${FULLDIR}/logApp
+
 cp ${ROOTDIR}/config/app/mysql.json ${FULLDIR}/app/config/mysql.json
 
 docker stop dishfu-app-container && docker rm dishfu-app-container  && docker image rm dishfu-app-image
