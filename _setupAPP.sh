@@ -24,7 +24,7 @@ mkdir -p ${ROOTDIR}/_shared/PDF/output
 mkdir -p ${ROOTDIR}/_shared/PDF/done
 mkdir -p ${ROOTDIR}/_shared/PDF/failed
 
-docker run -v "${FULLDIR}/cronJobs":/var/cronJobs -v "${FULLDIR}/app":/var/app -v "${FULLDIR}/log":/var/log \
+docker run -v "${FULLDIR}/cronJobs":/var/cronJobs -v "${FULLDIR}/app":/var/app -v "${FULLDIR}/logApp":/var/log \
     -v "${ROOTDIR}/_shared/PDF":/var/_shared/PDF  -p 3001:3000  \
     --network network_dishfu --restart on-failure \
     --name dishfu-app-container -d dishfu-app-image
