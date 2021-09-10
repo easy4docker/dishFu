@@ -16,6 +16,7 @@ module.exports = (req, res, next)=> {
     case 'auth':
     case 'ad':
     case 'menu':
+    case 'admin':
       standardModule(req.params.module, req, res, next);
       /*
       delete require.cache[__dirname +'/menu.js'];
