@@ -31,8 +31,14 @@ class Admin {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
     connection.connect();
-    const sql = "SELECT * FROM admin WHERE `phone` = '" + me.req.body.data.phone + "'";
-    connection.query(sql, function (err, result, fields) {
+    // const sql = "INSERT INTO application (`phone`, `visitorId`, `token`, `authcode`, `created`) VALUES ?";
+    const values = [
+      me.req.body.data.phone, me.req.body.data.visitorId, me.req.body.data.token, 123, new Date()
+    ]
+    //connection.query(sql, [[values]], function (err, result) {
+
+    const sql = "INSERT INTO adminSession (`phone`, `visitorId`, `token`, `authcode`, `created`) VALUES ?";
+    connection.query(sql, [[values]], function (err, result) {
       if (err) {
         me.res.send({status: 'failure', message:err.message});
       } else {
