@@ -32,9 +32,7 @@ class Admin {
     const connection = me.mysql.createConnection(me.cfg);
     connection.connect();
     const sql = "TRUNCATE adminSession ";
-    connection.query(sql, [[values]], function (err, result) {
-      callback();
-    });
+    connection.query(sql, (err, result) => callback);
     connection.end();
   }
   addSessionRecord() {
