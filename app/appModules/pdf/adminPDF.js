@@ -30,10 +30,10 @@ class AdminPDF {
     });
     connection.end();
   }
-  sendPDF(hashCode) {
+  sendPDF(rec) {
     const me = this;
     const fnDoc = __dirname + '/tpl/mailQrCodeDoc.html';
-    const linkUrl = 'http://192.168.86.126:3000/scanSignin/' + hashCode;
+    const linkUrl = 'http://192.168.86.126:3000/scanSignin/' + rec.token  + '/' + rec.authcode;
     me.QRCode.toDataURL(linkUrl, { 
       width:256,
       type: 'image/png',
@@ -66,7 +66,7 @@ class AdminPDF {
     const me = this;
     me.getRecord(
       (rec) => {
-        me.sendPDF((!rec || !rec[0]) ? '' : rec[0].authcode);
+        me.sendPDF((!rec || !rec[0]) ? '' : rec[0]);
         return true;
       }
     ); 
