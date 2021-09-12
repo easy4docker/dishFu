@@ -32,7 +32,7 @@ class Admin {
     const connection = me.mysql.createConnection(me.cfg);
     connection.connect();
     const sql = "TRUNCATE adminSession ";
-    connection.query(sql, (err, result) => callback);
+    connection.query(sql, (err, result) => callback());
     connection.end();
   }
   addSessionRecord() {
@@ -48,11 +48,7 @@ class Admin {
         if (err) {
           me.res.send({status: 'failure', message:err.message});
         } else {
-          if (result && result.length) {
-            me.res.send({status: 'success', data: result});
-          } else {
-            me.res.send({status: 'failure', message:'No data' + sql});
-          }
+          me.res.send({status: 'success', data: result});
         }
       });
       connection.end();
