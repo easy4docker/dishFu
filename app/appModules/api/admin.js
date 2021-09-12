@@ -27,30 +27,38 @@ class Admin {
     connection.end();
 
   }
-  addSessionRecord() {
+  truncateSessionRecord(callback) {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
     connection.connect();
-    // const sql = "INSERT INTO application (`phone`, `visitorId`, `token`, `authcode`, `created`) VALUES ?";
-    const values = [
-      me.req.body.data.phone, me.req.body.data.visitorId, me.req.body.data.token, 123, new Date()
-    ]
-    //connection.query(sql, [[values]], function (err, result) {
-
-    const sql = "INSERT INTO adminSession (`phone`, `visitorId`, `token`, `authcode`, `created`) VALUES ?";
+    const sql = "TRANCATE adminSession ";
     connection.query(sql, [[values]], function (err, result) {
-      if (err) {
-        me.res.send({status: 'failure', message:err.message});
-      } else {
-        if (result && result.length) {
-          me.res.send({status: 'success', data: result});
-        } else {
-          me.res.send({status: 'failure', message:'No data' + sql});
-        }
-      }
+      callback();
     });
     connection.end();
-
+  }
+  addSessionRecord() {
+    const me = this;
+    me.truncateSessionRecord(()=> {
+      const connection = me.mysql.createConnection(me.cfg);
+      connection.connect();
+      const values = [
+        me.req.body.data.phone, me.req.body.data.visitorId, me.req.body.data.token, new Date().getTime(), new Date()
+      ]
+      const sql = "INSERT INTO adminSession (`phone`, `visitorId`, `token`, `authcode`, `created`) VALUES ?";
+      connection.query(sql, [[values]], function (err, result) {
+        if (err) {
+          me.res.send({status: 'failure', message:err.message});
+        } else {
+          if (result && result.length) {
+            me.res.send({status: 'success', data: result});
+          } else {
+            me.res.send({status: 'failure', message:'No data' + sql});
+          }
+        }
+      });
+      connection.end();
+    });
   }
   actionError() {
     const me = this;
