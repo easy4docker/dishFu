@@ -50,7 +50,7 @@ class Admin {
       const connection = me.mysql.createConnection(me.cfg);
       connection.connect();
       const values = [
-        me.req.body.data.phone, me.req.body.data.visitorId, me.req.body.data.token, me.makeid(8), new Date()
+        me.req.body.data.phone, me.req.body.data.visitorId, me.req.body.data.token, me.makeid(16), new Date()
       ]
       const sql = "INSERT INTO adminSession (`phone`, `visitorId`, `token`, `authcode`, `created`) VALUES ?";
       connection.query(sql, [[values]], function (err, result) {
