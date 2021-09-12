@@ -31,7 +31,7 @@ class Admin {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
     connection.connect();
-    const sql = "TRANCATE adminSession ";
+    const sql = "TRUNCATE adminSession ";
     connection.query(sql, [[values]], function (err, result) {
       callback();
     });
