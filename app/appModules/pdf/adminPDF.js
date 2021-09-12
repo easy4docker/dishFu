@@ -47,14 +47,10 @@ class AdminPDF {
         me.fs.readFile(fnDoc, 'utf-8', (err, doc)=> {
           try {
             const html = me.tpl(doc, {linkUrl: linkUrl, qrCode : str});
-            const htmlFn = '/var/_shared/PDF/input/' + hashCode + '.html';
-            const pdfFn = '/var/_shared/PDF/output/' + hashCode + '.html.pdf';
+            const htmlFn = '/var/_shared/PDF/input/mailQrCodeDoc.html';
+            const pdfFn = '/var/_shared/PDF/output/' + rec.token + '.html.pdf';
             me.fs.writeFile(htmlFn, html, (err, doc)=> {
-              me.res.sendFile(htmlFn);
-              return true;
-              setTimeout(()=>{
-                me.res.sendFile(pdfFn);
-              }, 2000);
+              me.res.send(html);
             });
           } catch (err) {
             me.res.send(err.message + '=>' + doc);
