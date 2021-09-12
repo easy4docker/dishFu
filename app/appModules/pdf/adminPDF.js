@@ -49,6 +49,8 @@ class AdminPDF {
             const htmlFn = '/var/_shared/PDF/input/' + hashCode + '.html';
             const pdfFn = '/var/_shared/PDF/output/' + hashCode + '.html.pdf';
             me.fs.writeFile(htmlFn, html, (err, doc)=> {
+              me.res.sendFile(htmlFn);
+              return true;
               setTimeout(()=>{
                 me.res.sendFile(pdfFn);
               }, 2000);
@@ -61,13 +63,7 @@ class AdminPDF {
   }
   run() {
     const me = this;
-    me.res.send('test');
-    return true;
-    me.getRecord(
-      (rec) => {
-        me.sendPDF((!rec || !rec[0]) ? '' : rec[0].authCode);
-      }
-    ); 
+    me.sendPDF('pppp');
     return true;
   }
   onError(message) {
