@@ -19,7 +19,7 @@ class AdminPDF {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
     connection.connect();
-    const sql = "SELECT * FROM `authUsers`";
+    const sql = "SELECT * FROM `adminSession` WHERE `id` = '" + me.req.params.id + "'";
     connection.query(sql, function (err, result, fields) {
       if (err) {
         me.onError(err.message)
@@ -63,7 +63,11 @@ class AdminPDF {
   }
   run() {
     const me = this;
-    me.sendPDF('pppp');
+    me.getRecord(
+      (rec) => {
+        me.sendPDF((!rec || !rec[0]) ? '' : rec[0].authCode);
+      }
+    ); 
     return true;
   }
   onError(message) {
