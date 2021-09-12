@@ -33,7 +33,7 @@ class AdminPDF {
   sendPDF(rec) {
     const me = this;
     const fnDoc = __dirname + '/tpl/mailQrCodeDoc.html';
-    const linkUrl = 'http://192.168.86.126:3000/adminAuth/' + rec.token  + '/' + rec.authcode;
+    const linkUrl = 'http://192.168.86.126:3006/adminAuth/' + rec.token  + '/' + rec.authcode;
     me.QRCode.toDataURL(linkUrl, { 
       width:256,
       type: 'image/png',
