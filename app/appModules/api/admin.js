@@ -36,12 +36,11 @@ class Admin {
     connection.end();
 
   }
-  /*
   addSessionRecord() {
-    changeSessionRecord('add'); 
+    this.changeSessionRecord('add'); 
   }
   updateSessionRecord() {
-    changeSessionRecord('update'); 
+    this.changeSessionRecord('update'); 
   }
   changeSessionRecord(code)  {
     const me = this;
@@ -74,7 +73,7 @@ class Admin {
     }
     connection.end();
   }
-  */
+  
   /*
   readSessionRecord(callback) {
     const me = this;
