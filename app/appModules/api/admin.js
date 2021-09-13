@@ -52,7 +52,7 @@ class Admin {
       const values = [
         me.req.body.data.phone, me.req.body.data.visitorId, me.req.body.data.token, me.req.body.data.socketid, me.makeid(32), new Date()
       ]
-      const sql = "INSERT INTO adminSession (`phone`, `visitorId`, `token`, `sockedid`, `authcode`, `created`) VALUES ?";
+      const sql = "INSERT INTO adminSession (`phone`, `visitorId`, `token`, `socketid`, `authcode`, `created`) VALUES ?";
       connection.query(sql, [[values]], function (err, result) {
         if (err) {
           me.res.send({status: 'failure', message:err.message});
