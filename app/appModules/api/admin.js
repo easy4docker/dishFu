@@ -37,7 +37,25 @@ class Admin {
 
   }
   addSessionRecord() {
-    this.changeSessionRecord('add'); 
+    const me = this;
+    const connection = me.mysql.createConnection(me.cfg);
+    const sql = "SELECT `id` FROM  adminSession  " + 
+        " WHERE `visitorId` = '" + me.req.body.data.visitorId + "'  " +
+        " AND `token` = '" + me.req.body.data.token + "' " +
+        " AND `phone` = '" + me.req.body.data.phone + "' ";
+    connection.query(sql, function (err, result) {
+      if (err) {
+        me.res.send({status: 'failure', message:err.message});
+      } else {
+        if (!result.length) {
+          this.changeSessionRecord('add'); 
+        } else {
+          me.res.send({status: 'success', data: result});
+        }
+      }
+    });
+    connection.end();
+    
   }
   updateSessionRecord() {
     this.changeSessionRecord('update'); 
@@ -89,7 +107,7 @@ class Admin {
       } 
     connection.end();
   }
-  
+
   checkTokenAuthCode() {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
