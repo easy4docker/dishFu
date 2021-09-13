@@ -36,14 +36,6 @@ class Admin {
     connection.end();
 
   }
-  truncateSessionRecord(callback) {
-    const me = this;
-    const connection = me.mysql.createConnection(me.cfg);
-    connection.connect();
-    const sql = "TRUNCATE adminSession ";
-    connection.query(sql, (err, result) => callback());
-    connection.end();
-  }
   addSessionRecord() {
     const me = this;
     me.readSessionRecord((result)=>{
@@ -86,24 +78,22 @@ class Admin {
   }
   readSessionRecord(callback) {
     const me = this;
-    me.truncateSessionRecord(()=> {
-      const connection = me.mysql.createConnection(me.cfg);
-      connection.connect();
-      const values = [
-        me.req.body.data.phone, me.req.body.data.visitorId, me.req.body.data.token, me.req.body.data.socketid, me.makeid(32), new Date()
-      ]
-      const sql = "SELECT * FROM adminSession WHERE `visitorId` = '" + me.req.body.data.visitorId + "'  " +
-      " AND `token` = '" + me.req.body.data.token + "' ";
-      " AND `phone` = '" + me.req.body.data.phone + "' ";
-      connection.query(sql, [[values]], function (err, result) {
-        if (err) {
-          callback({status: 'failure', message:err.message});
-        } else {
-          callback({status: 'success', data: result});
-        }
-      });
-      connection.end();
+    const connection = me.mysql.createConnection(me.cfg);
+    connection.connect();
+    const values = [
+      me.req.body.data.phone, me.req.body.data.visitorId, me.req.body.data.token, me.req.body.data.socketid, me.makeid(32), new Date()
+    ]
+    const sql = "SELECT * FROM adminSession WHERE `visitorId` = '" + me.req.body.data.visitorId + "'  " +
+    " AND `token` = '" + me.req.body.data.token + "' ";
+    " AND `phone` = '" + me.req.body.data.phone + "' ";
+    connection.query(sql, [[values]], function (err, result) {
+      if (err) {
+        callback({status: 'failure', message:err.message});
+      } else {
+        callback({status: 'success', data: result});
+      }
     });
+    connection.end();
   }
 
   checkTokenAuthCode() {
