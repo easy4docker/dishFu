@@ -39,7 +39,7 @@ class Admin {
   addSessionRecord() {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
-    const sql = "SELECT `id` FROM  adminSession  " + 
+    const sql = "SELECT `id` FROM  `adminSession`  " + 
         " WHERE `visitorId` = '" + me.req.body.data.visitorId + "'  " +
         " AND `token` = '" + me.req.body.data.token + "' " +
         " AND `phone` = '" + me.req.body.data.phone + "' ";
