@@ -36,6 +36,28 @@ class Admin {
     connection.end();
 
   }
+
+  getTargetSocket() {
+    const me = this;
+    const connection = me.mysql.createConnection(me.cfg);
+    connection.connect();
+    const sql = "SELECT * FROM admin WHERE `phone` = '" + me.req.body.data.phone + "' AND " +
+        "`token` = '" + me.req.body.data.token + "'"
+    connection.query(sql, function (err, result, fields) {
+      if (err) {
+        me.res.send({status: 'failure', message:err.message});
+      } else {
+        if (result && result.length) {
+          me.res.send({status: 'success', data: result});
+        } else {
+          me.res.send({status: 'failure', message:'No data'});
+        }
+      }
+    });
+    connection.end();
+
+  }
+
   addSessionRecord() {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
