@@ -106,7 +106,6 @@ class Admin {
     });
   }
 
-
   checkTokenAuthCode() {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
