@@ -37,45 +37,43 @@ class Admin {
 
   }
   addSessionRecord() {
-    const me = this;
-    me.readSessionRecord((result)=>{
-        if (result.status === 'success') {
-          if (!!result.data && result.data.length) {
-            const connection = me.mysql.createConnection(me.cfg);
-            connection.connect();
-            const values = [
-              me.req.body.data.phone, me.req.body.data.visitorId, me.req.body.data.token, me.req.body.data.socketid, me.makeid(32), new Date()
-            ]
-            const sql = "UPDATE adminSession  SET `socketid` = '" + me.req.body.data.socketid + "' `created` = '" + new Date() + "'";
-            connection.query(sql, function (err, result) {
-              if (err) {
-                me.res.send({status: 'failure', message:err.message});
-              } else {
-                me.res.send({status: 'success', data: result});
-              }
-            });
-            connection.end();
-          } else {
-            const connection = me.mysql.createConnection(me.cfg);
-            connection.connect();
-            const values = [
-              me.req.body.data.phone, me.req.body.data.visitorId, me.req.body.data.token, me.req.body.data.socketid, me.makeid(32), new Date()
-            ]
-            const sql = "INSERT INTO adminSession (`phone`, `visitorId`, `token`, `socketid`, `authcode`, `created`) VALUES ?";
-            connection.query(sql, [[values]], function (err, result) {
-              if (err) {
-                me.res.send({status: 'failure', message:err.message});
-              } else {
-                me.res.send({status: 'success', data: result});
-              }
-            });
-            connection.end();
-          }
-
-        }
-
-      });
+    changeSessionRecord('add'); 
   }
+  updateSessionRecord() {
+    changeSessionRecord('update'); 
+  }
+  changeSessionRecord(code)  {
+    const me = this;
+    const connection = me.mysql.createConnection(me.cfg);
+    connection.connect();
+    if (!!result.data && result.data.length) {
+        const sql = "UPDATE adminSession  SET `socketid` = '" + me.req.body.data.socketid + "', `created` = '" + new Date() + "'" + 
+        " WHERE `visitorId` = '" + me.req.body.data.visitorId + "'  " +
+        " AND `token` = '" + me.req.body.data.token + "' ";
+        " AND `phone` = '" + me.req.body.data.phone + "' ";
+        connection.query(sql, function (err, result) {
+          if (err) {
+            me.res.send({status: 'failure', message:err.message});
+          } else {
+            me.res.send({status: 'success', data: result});
+          }
+        });
+      } else {
+        const values = [
+          me.req.body.data.phone, me.req.body.data.visitorId, me.req.body.data.token, me.req.body.data.socketid, me.makeid(32), new Date()
+        ]
+        const sql = "INSERT INTO adminSession (`phone`, `visitorId`, `token`, `socketid`, `authcode`, `created`) VALUES ?";
+        connection.query(sql, [[values]], function (err, result) {
+          if (err) {
+            me.res.send({status: 'failure', message:err.message});
+          } else {
+            me.res.send({status: 'success', data: result});
+          }
+        });
+    }
+    connection.end();
+  }
+  /*
   readSessionRecord(callback) {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
@@ -95,7 +93,7 @@ class Admin {
     });
     connection.end();
   }
-
+*/
   checkTokenAuthCode() {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
