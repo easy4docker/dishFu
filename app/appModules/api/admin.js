@@ -36,6 +36,7 @@ class Admin {
     connection.end();
 
   }
+  /*
   addSessionRecord() {
     changeSessionRecord('add'); 
   }
@@ -49,7 +50,7 @@ class Admin {
     if (code === 'update') {
         const sql = "UPDATE adminSession  SET `socketid` = '" + me.req.body.data.socketid + "', `created` = '" + new Date() + "'" + 
         " WHERE `visitorId` = '" + me.req.body.data.visitorId + "'  " +
-        " AND `token` = '" + me.req.body.data.token + "' ";
+        " AND `token` = '" + me.req.body.data.token + "' " +
         " AND `phone` = '" + me.req.body.data.phone + "' ";
         connection.query(sql, function (err, result) {
           if (err) {
@@ -73,6 +74,7 @@ class Admin {
     }
     connection.end();
   }
+  */
   /*
   readSessionRecord(callback) {
     const me = this;
