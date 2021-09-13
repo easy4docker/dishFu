@@ -48,14 +48,13 @@ class Admin {
     connection.connect();
     if (code === 'update') {
         const sql = "UPDATE adminSession  SET `socketid` = '" + me.req.body.data.socketid + "', `created` = NOW()" + 
-        " WHERE `visitorId` = '" + me.req.body.data.visitorId + "'  " +
-        " AND `token` = '" + me.req.body.data.token + "' " +
+        " WHERE `token` = '" + me.req.body.data.token + "' " +
         " AND `phone` = '" + me.req.body.data.phone + "' ";
         connection.query(sql, function (err, result) {
           if (err) {
             me.res.send({status: 'failure', message:err.message});
           } else {
-            me.res.send({status: 'success', data: result});
+            me.res.send({status: 'success', data: result + '==='+sql});
           }
         });
       } else {
