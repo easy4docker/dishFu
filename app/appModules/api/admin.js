@@ -48,7 +48,7 @@ class Admin {
         me.res.send({status: 'failure', message:err.message});
       } else {
         if (!result.length) {
-          this.changeSessionRecord('add'); 
+          me.changeSessionRecord('add'); 
         } else {
           me.res.send({status: 'success', data: result});
         }
