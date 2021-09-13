@@ -41,7 +41,7 @@ class Admin {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
     connection.connect();
-    const sql = "SELECT * FROM admin WHERE `phone` = '" + me.req.body.data.phone + "' AND " +
+    const sql = "SELECT * FROM `adminSession` WHERE `phone` = '" + me.req.body.data.phone + "' AND " +
         "`token` = '" + me.req.body.data.token + "'"
     connection.query(sql, function (err, result, fields) {
       if (err) {
