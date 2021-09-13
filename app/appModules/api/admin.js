@@ -42,12 +42,16 @@ class Admin {
   updateSessionRecord() {
     this.changeSessionRecord('update'); 
   }
+  deleteSessionRecord() {
+    this.changeSessionRecord('delete'); 
+  }
+
   changeSessionRecord(code)  {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
     connection.connect();
     if (code === 'update') {
-        const sql = "UPDATE adminSession  SET `socketid` = '" + me.req.body.data.socketid + "', `created` = NOW()" + 
+        const sql = "DELETE FROM  adminSession  " + 
         " WHERE `visitorId` = '" + me.req.body.data.visitorId + "'  " +
         " AND `token` = '" + me.req.body.data.token + "' " +
         " AND `phone` = '" + me.req.body.data.phone + "' ";
@@ -55,10 +59,10 @@ class Admin {
           if (err) {
             me.res.send({status: 'failure', message:err.message});
           } else {
-            me.res.send({status: 'success', data: result + '==='+sql});
+            me.res.send({status: 'success', data: result});
           }
         });
-      } else {
+      } else if (code === 'add') {
         const values = [
           me.req.body.data.phone, me.req.body.data.visitorId, me.req.body.data.token, me.req.body.data.socketid, me.makeid(32), new Date()
         ]
@@ -70,7 +74,19 @@ class Admin {
             me.res.send({status: 'success', data: result});
           }
         });
-    }
+      }  else  {
+        const sql = "UPDATE adminSession  SET `socketid` = '" + me.req.body.data.socketid + "', `created` = NOW()" + 
+        " WHERE `visitorId` = '" + me.req.body.data.visitorId + "'  " +
+        " AND `token` = '" + me.req.body.data.token + "' " +
+        " AND `phone` = '" + me.req.body.data.phone + "' ";
+        connection.query(sql, function (err, result) {
+          if (err) {
+            me.res.send({status: 'failure', message:err.message});
+          } else {
+            me.res.send({status: 'success', data: result + '==='+sql});
+          }
+        });
+      } 
     connection.end();
   }
   
