@@ -50,7 +50,7 @@ class Admin {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
     connection.connect();
-    if (code === 'update') {
+    if (code === 'delete') {
         const sql = "DELETE FROM  adminSession  " + 
         " WHERE `visitorId` = '" + me.req.body.data.visitorId + "'  " +
         " AND `token` = '" + me.req.body.data.token + "' " +
