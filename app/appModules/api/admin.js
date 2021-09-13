@@ -46,7 +46,7 @@ class Admin {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
     connection.connect();
-    if (!!result.data && result.data.length) {
+    if (code === 'update') {
         const sql = "UPDATE adminSession  SET `socketid` = '" + me.req.body.data.socketid + "', `created` = '" + new Date() + "'" + 
         " WHERE `visitorId` = '" + me.req.body.data.visitorId + "'  " +
         " AND `token` = '" + me.req.body.data.token + "' ";
