@@ -76,7 +76,7 @@ class RouteService {
       if (err) {
         callback({status: 'failure', message:err.message});
       } else {
-        callback({status: 'success', data: + code + '.' + result.insertId});
+        callback({status: 'success', data: code + '.' + result.insertId});
       }
     });
     connection.end();
