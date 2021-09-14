@@ -19,8 +19,8 @@ class RouteService {
 }
 call() {
   const me = this;
-  if (['push', 'pull'].indexOf(req.params.action) !== -1) {
-    me.res.writeHead(301, {"Location": "http://192.168.86.126:3006/"});
+  if (['push', 'pull'].indexOf(me.req.params.action) !== -1) {
+    me.res.writeHead(302, {"Location": "http://192.168.86.126:3006/"});
     me.res.end();
     // res.send(req.params)
   } else {
