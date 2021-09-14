@@ -48,7 +48,7 @@ class RouteService {
       const me = this;
       const connection = me.mysql.createConnection(me.cfg);
       connection.connect();
-      const code = ((!me.req.query.code) ? '' : me.req.query.code).split('.');
+      const code = ((!me.req.params.code) ? '' : me.req.params.code).split('.');
       const sql = "SELECT  `data` FROM `hashService` WHERE `code` = '" +code[0] + "' AND `id` = '" + code[1] + "'";
       connection.query(sql, function (err, result, fields) {
         if (err) {
