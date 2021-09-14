@@ -21,18 +21,22 @@ call() {
   const me = this;
   switch(me.req.params.action) {
     case 'push':
-      this.push(
-        ()=>{
+      me.push(
+        (result)=>{
+          me.res.send(result);
+          /*
           me.res.writeHead(302, {"Location": "http://192.168.86.126:3006/"});
-          me.res.end();
+          me.res.end();*/
         }
       );
       break;
     case 'pull':
-      this.pull(
-        ()=>{
+      me.pull(
+        (result)=>{
+          me.res.send(result);
+          /*
           me.res.writeHead(302, {"Location": "http://192.168.86.126:3006/"});
-          me.res.end();
+          me.res.end();*/
         }
       );
       break;
