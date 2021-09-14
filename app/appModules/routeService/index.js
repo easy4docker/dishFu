@@ -27,6 +27,7 @@ call() {
           me.res.end();
         }
       );
+      break;
     case 'pull':
       this.pull(
         ()=>{
