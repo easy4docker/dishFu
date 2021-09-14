@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/api');
 var pdfRouter = require('./routes/pdf');
+var serviceRouter = require('./routes/service');
 
 const app = express();
 
@@ -33,6 +34,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api', apiRouter);
 app.use('/pdf', pdfRouter);
+app.use('/_service_', serviceRouter);
+
 
 /*
 app.use('/', express.static('public/build/'))
