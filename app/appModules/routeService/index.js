@@ -24,19 +24,18 @@ class RouteService {
         me.push(
           (result)=>{
             me.res.send(result);
-            /*
-            me.res.writeHead(302, {"Location": "http://192.168.86.126:3006/"});
-            me.res.end();*/
           }
         );
         break;
       case 'pull':
         me.pull(
           (result)=>{
-            me.res.send(result);
-            /*
-            me.res.writeHead(302, {"Location": "http://192.168.86.126:3006/"});
-            me.res.end();*/
+            if (result.status === 'success' && result.data) {
+              me.res.writeHead(302, {"Location": result.data.data});
+              me.res.end();
+            } else {
+              me.res(result);
+            }
           }
         );
         break;
@@ -81,9 +80,9 @@ class RouteService {
     });
     connection.end();
     }
-    actionError() {
+    actionError(str) {
       const me = this;
-      me.res.send({status: 'failure',  message: 'Action Error!'});
+      me.res.send({status: 'failure',  message: (str) ? str : 'Action Error!'});
     }
 }
 module.exports  = RouteService;
