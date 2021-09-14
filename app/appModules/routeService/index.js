@@ -21,7 +21,12 @@ call() {
   const me = this;
   switch(me.req.params.action) {
     case 'push':
-
+      this.push(
+        ()=>{
+          me.res.writeHead(302, {"Location": "http://192.168.86.126:3006/"});
+          me.res.end();
+        }
+      );
     case 'pull':
       this.pull(
         ()=>{
@@ -71,7 +76,7 @@ push(callback) {
   }
   actionError() {
     const me = this;
-    me.res.send({status: 'failure',  message: 'Action  3 Error!'});
+    me.res.send({status: 'failure',  message: 'Action  Error!'});
   }
 }
 module.exports  = RouteService;
