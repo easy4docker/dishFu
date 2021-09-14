@@ -27,17 +27,17 @@ call() {
     me.actionError();
   }
 }
-push() {
+pull() {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
     connection.connect();
-    const sql = "SELECT * FROM admin WHERE `phone` = '" + me.req.body.data.phone + "'";
+    const sql = "SELECT  `url` FROM `routeService` WHERE `code` = '" + me.req.body.data.code + "'";
     connection.query(sql, function (err, result, fields) {
       if (err) {
         me.res.send({status: 'failure', message:err.message});
       } else {
         if (result && result.length) {
-          me.res.send({status: 'success', data: result});
+          me.res.send({status: 'success', data: result[0]});
         } else {
           me.res.send({status: 'failure', message:'No data'});
         }
@@ -47,25 +47,20 @@ push() {
 
   }
 
-pull() {
-    const me = this;
-    const connection = me.mysql.createConnection(me.cfg);
-    connection.connect();
-    const sql = "SELECT * FROM `adminSession` WHERE `phone` = '" + me.req.body.data.phone + "' AND " +
-        "`token` = '" + me.req.body.data.token + "'"
-    connection.query(sql, function (err, result, fields) {
-      if (err) {
-        me.res.send({status: 'failure', message:err.message});
-      } else {
-        if (result && result.length) {
-          me.res.send({status: 'success', data: result});
-        } else {
-          me.res.send({status: 'failure', message:'No data'});
-        }
-      }
-    });
-    connection.end();
-
+push() {
+  const me = this;
+  const connection = me.mysql.createConnection(me.cfg);
+  connection.connect();
+  const sql = "INSERT INTO `routeService` (`code`, `url`, `created`) VALUES ?";
+  const values =[me.req.body.data.code, me.req.body.data.url, new Date()];
+  connection.query(sql, [[values]], function (err, result) {
+    if (err) {
+      me.res.send({status: 'failure', message:err.message});
+    } else {
+      me.res.send({status: 'success', data: result});
+    }
+  });
+  connection.end();
   }
   actionError() {
     const me = this;
