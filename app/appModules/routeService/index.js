@@ -69,7 +69,7 @@ push(callback) {
   const connection = me.mysql.createConnection(me.cfg);
   connection.connect();
   const sql = "INSERT INTO `routeService` (`code`, `url`, `created`) VALUES ?";
-  const values =[me.req.body.data.code, me.req.body.data.url, new Date()];
+  const values =[me.req.body.code, me.req.body.url, new Date()];
   connection.query(sql, [[values]], function (err, result) {
     if (err) {
       callback({status: 'failure', message:err.message});
