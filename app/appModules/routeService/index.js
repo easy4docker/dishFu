@@ -48,7 +48,8 @@ class RouteService {
       const me = this;
       const connection = me.mysql.createConnection(me.cfg);
       connection.connect();
-      const sql = "SELECT  `url` FROM `routeService` WHERE `code` = '" + me.req.body.data.code + "'";
+      const code = ((!me.req.query.code) ? '' : me.req.query.code).split('.');
+      const sql = "SELECT  `data` FROM `hashService` WHERE `code` = '" +code[0] + "' AND `id` = '" + code[1] + "'";
       connection.query(sql, function (err, result, fields) {
         if (err) {
           callback({status: 'failure', message:err.message});
@@ -68,7 +69,7 @@ class RouteService {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
     connection.connect();
-    const sql = "INSERT INTO `routeService` (`code`, `url`, `created`) VALUES ?";
+    const sql = "INSERT INTO `hashService` (`code`, `data`, `created`) VALUES ?";
     const code = me.makeid(16);
     const values =[code, me.req.body.url, new Date()];
     connection.query(sql, [[values]], function (err, result) {
