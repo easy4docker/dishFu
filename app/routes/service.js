@@ -10,6 +10,14 @@ for (let i=0 ; i < RESTS.length; i++) {
     }
     return true;
   });
+  router[RESTS[i]]('/:action/:code/:other/:more', (req, res, next)=> {
+    if (['PDF', 'APP'].indexOf(req.params.action) !== -1) {
+      res.send(req.params)
+    } else {
+      res.send({status: 'failure',  message: 'Action Error!'});
+    }
+    return true;
+  });
 }
 
 module.exports = router;
