@@ -16,72 +16,73 @@ class RouteService {
       result += characters.charAt(Math.floor(Math.random() *  charactersLength));
    }
    return result;
-}
-call() {
-  const me = this;
-  switch(me.req.params.action) {
-    case 'push':
-      me.push(
-        (result)=>{
-          me.res.send(result);
-          /*
-          me.res.writeHead(302, {"Location": "http://192.168.86.126:3006/"});
-          me.res.end();*/
-        }
-      );
-      break;
-    case 'pull':
-      me.pull(
-        (result)=>{
-          me.res.send(result);
-          /*
-          me.res.writeHead(302, {"Location": "http://192.168.86.126:3006/"});
-          me.res.end();*/
-        }
-      );
-      break;
-    default:  
-      me.actionError(); 
   }
-}
-pull(callback) {
+  call() {
+    const me = this;
+    switch(me.req.params.action) {
+      case 'push':
+        me.push(
+          (result)=>{
+            me.res.send(result);
+            /*
+            me.res.writeHead(302, {"Location": "http://192.168.86.126:3006/"});
+            me.res.end();*/
+          }
+        );
+        break;
+      case 'pull':
+        me.pull(
+          (result)=>{
+            me.res.send(result);
+            /*
+            me.res.writeHead(302, {"Location": "http://192.168.86.126:3006/"});
+            me.res.end();*/
+          }
+        );
+        break;
+      default:  
+        me.actionError(); 
+    }
+  }
+  pull(callback) {
+      const me = this;
+      const connection = me.mysql.createConnection(me.cfg);
+      connection.connect();
+      const sql = "SELECT  `url` FROM `routeService` WHERE `code` = '" + me.req.body.data.code + "'";
+      connection.query(sql, function (err, result, fields) {
+        if (err) {
+          callback({status: 'failure', message:err.message});
+        } else {
+          if (result && result.length) {
+            callback({status: 'success', data: result[0]});
+          } else {
+            callback({status: 'failure', message:'No data'});
+          }
+        }
+      });
+      connection.end();
+
+    }
+
+  push(callback) {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
     connection.connect();
-    const sql = "SELECT  `url` FROM `routeService` WHERE `code` = '" + me.req.body.data.code + "'";
-    connection.query(sql, function (err, result, fields) {
+    const sql = "INSERT INTO `routeService` (`code`, `url`, `created`) VALUES ?";
+    const code = me.makeid(16);
+    const values =[code, me.req.body.url, new Date()];
+    connection.query(sql, [[values]], function (err, result) {
       if (err) {
         callback({status: 'failure', message:err.message});
       } else {
-        if (result && result.length) {
-          callback({status: 'success', data: result[0]});
-        } else {
-          callback({status: 'failure', message:'No data'});
-        }
+        callback({status: 'success', data: result.insertId + '.' + code});
       }
     });
     connection.end();
-
-  }
-
-push(callback) {
-  const me = this;
-  const connection = me.mysql.createConnection(me.cfg);
-  connection.connect();
-  const sql = "INSERT INTO `routeService` (`code`, `url`, `created`) VALUES ?";
-  const values =[me.req.body.code, me.req.body.url, new Date()];
-  connection.query(sql, [[values]], function (err, result) {
-    if (err) {
-      callback({status: 'failure', message:err.message});
-    } else {
-      callback({status: 'success', data: result});
     }
-  });
-  connection.end();
-  }
-  actionError() {
-    const me = this;
-    me.res.send({status: 'failure',  message: 'Action Error!'});
-  }
+    actionError() {
+      const me = this;
+      me.res.send({status: 'failure',  message: 'Action Error!'});
+    }
 }
 module.exports  = RouteService;
