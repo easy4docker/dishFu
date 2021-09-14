@@ -19,7 +19,7 @@ class RouteService {
 }
 call() {
   const me = this;
-  switch(me.req.params.action) {
+  switch(me.req.params.code) {
     case 'push':
       me.push(
         (result)=>{
@@ -81,7 +81,7 @@ push(callback) {
   }
   actionError() {
     const me = this;
-    me.res.send({status: 'failure',  message: 'Action ='+me.req.params.action+ '=6 {} Error!'});
+    me.res.send({status: 'failure',  message: 'Code Error!'});
   }
 }
 module.exports  = RouteService;
