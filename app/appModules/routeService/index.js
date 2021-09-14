@@ -19,27 +19,34 @@ class RouteService {
 }
 call() {
   const me = this;
-  if (['push', 'pull'].indexOf(me.req.params.action) !== -1) {
-    me.res.writeHead(302, {"Location": "http://192.168.86.126:3006/"});
-    me.res.end();
-    // res.send(req.params)
-  } else {
-    me.actionError();
+  switch(me.req.params.action) {
+    case 'push':
+
+    case 'pull':
+      this.pull(
+        ()=>{
+          me.res.writeHead(302, {"Location": "http://192.168.86.126:3006/"});
+          me.res.end();
+        }
+      );
+      break;
+    default:  
+      me.actionError(); 
   }
 }
-pull() {
+pull(callback) {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
     connection.connect();
     const sql = "SELECT  `url` FROM `routeService` WHERE `code` = '" + me.req.body.data.code + "'";
     connection.query(sql, function (err, result, fields) {
       if (err) {
-        me.res.send({status: 'failure', message:err.message});
+        callback({status: 'failure', message:err.message});
       } else {
         if (result && result.length) {
-          me.res.send({status: 'success', data: result[0]});
+          callback({status: 'success', data: result[0]});
         } else {
-          me.res.send({status: 'failure', message:'No data'});
+          callback({status: 'failure', message:'No data'});
         }
       }
     });
@@ -47,7 +54,7 @@ pull() {
 
   }
 
-push() {
+push(callback) {
   const me = this;
   const connection = me.mysql.createConnection(me.cfg);
   connection.connect();
@@ -55,16 +62,16 @@ push() {
   const values =[me.req.body.data.code, me.req.body.data.url, new Date()];
   connection.query(sql, [[values]], function (err, result) {
     if (err) {
-      me.res.send({status: 'failure', message:err.message});
+      callback({status: 'failure', message:err.message});
     } else {
-      me.res.send({status: 'success', data: result});
+      callback({status: 'success', data: result});
     }
   });
   connection.end();
   }
   actionError() {
     const me = this;
-    me.res.send({status: 'failure',  message: 'Action  2 Error!'});
+    me.res.send({status: 'failure',  message: 'Action  3 Error!'});
   }
 }
 module.exports  = RouteService;
