@@ -76,7 +76,7 @@ push(callback) {
   }
   actionError() {
     const me = this;
-    me.res.send({status: 'failure',  message: 'Action  Error!'});
+    me.res.send({status: 'failure',  message: 'Action 2 {} Error!'});
   }
 }
 module.exports  = RouteService;
