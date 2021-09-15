@@ -8,6 +8,30 @@ class RouteService {
     delete require.cache[config.root +'/config/mysql.json'];
     this.cfg = require(config.root +'/config/mysql.json').devDB;;
   }
+  dishFuHashService(url, callback) {
+    const https = require('https');
+    const data = JSON.stringify({ url: url })
+
+    const options = {
+      hostname: 'dishfu.com',
+      port: 443,
+      rejectUnauthorized: 0,
+      path: '/_service_/push/code/add',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': data.length
+      }
+    }
+    const req = https.request(options, res => {
+      res.on('data', d => callback(d))
+    })
+
+    req.on('error', error => {
+      callback(error)
+    })
+    req.end()
+  }
   makeid(length) {
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

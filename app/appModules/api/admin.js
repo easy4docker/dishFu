@@ -57,7 +57,28 @@ class Admin {
     connection.end();
 
   }
+  textService () {
+    const Vonage = require('@vonage/server-sdk');
+    const vonage = new Vonage({
+      apiKey: "d6375822",
+      apiSecret: "6YgWVWALI4voZoXQ"
+    })
+    const from = "18445646384"
+    const to = "15108467571"
+    const text = 'just want to test dynamic link https://dishfu.com/_service_/pull/TLL4dkpLVWyzJQeX.3/info '
 
+    vonage.message.sendSms(from, to, text, (err, responseData) => {
+        if (err) {
+            console.log(err);
+        } else {
+            if(responseData.messages[0]['status'] === "0") {
+                console.log("Message sent successfully.");
+            } else {
+                console.log(`Message failed with error: ${responseData.messages[0]['error-text']}`);
+            }
+        }
+    })
+  }
   addSessionRecord() {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
@@ -72,7 +93,8 @@ class Admin {
         if (!result.length) {
           me.changeSessionRecord('add'); 
         } else {
-          me.res.send({status: 'success', data: result});
+          
+          me.res.send({status: 'success', data: result, pp:888});
         }
       }
     });
@@ -111,7 +133,8 @@ class Admin {
           if (err) {
             me.res.send({status: 'failure', message:err.message});
           } else {
-            me.res.send({status: 'success', data: result});
+            // me.textService ();
+            me.res.send({status: 'success', data: result, ppp:999});
           }
         });
       }  else  {
