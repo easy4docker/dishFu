@@ -133,7 +133,7 @@ class Admin {
           if (err) {
             me.res.send({status: 'failure', message:err.message});
           } else {
-            // me.textService ();
+            //  me.textService ();
             me.res.send({status: 'success', data: result, ppp:999});
           }
         });
