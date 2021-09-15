@@ -4,9 +4,9 @@ class Admin {
     this.res = res;
     this.next = next;
     this.mysql = require('mysql');
-    this.config = this.req.app.get('config');
-    delete require.cache[this.config.root +'/config/mysql.json'];
-    this.cfg = require(this.config.root +'/config/mysql.json').devDB;;
+    const config = this.req.app.get('config');
+    delete require.cache[config.root +'/config/mysql.json'];
+    this.cfg = require(config.root +'/config/mysql.json').devDB;;
   }
   makeid(length) {
     var result           = '';
@@ -54,8 +54,7 @@ class Admin {
             .done();
 
       */
-     //  const twilioCfg = require(this.config.root +'/config/sms/twilio.json');
-     // , twilioCfg:'twilioCfg'
+       const twilioCfg = require(config.root +'/config/mysql.json').devDB;;
        me.res.send({status: 'failure', message: JSON.stringify(data)});
     }
   }
