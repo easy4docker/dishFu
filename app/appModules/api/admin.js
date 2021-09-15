@@ -17,19 +17,19 @@ class Admin {
    }
    return result;
   }
-  checkPhone(callback) {
+  checkPhone() {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
     connection.connect();
     const sql = "SELECT * FROM admin WHERE `phone` = '" + me.req.body.data.phone + "'";
     connection.query(sql, function (err, result, fields) {
       if (err) {
-        callback({status: 'failure', message:err.message});
+        me.processPhone({status: 'failure', message:err.message});
       } else {
         if (result && result.length) {
-          callback({status: 'success', data: result});
+          me.processPhone({status: 'success', data: result});
         } else {
-          callback({status: 'failure', message:'The phone ' + me.req.body.data.phone + ' is not authrized.'});
+          me.processPhone({status: 'failure', message:'The phone ' + me.req.body.data.phone + ' is not authrized.'});
         }
       }
     });
