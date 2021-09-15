@@ -47,9 +47,9 @@ class Admin {
       const authToken = twilioCFG.authToken; 
     
       const messagingServiceSid = twilioCFG.messagingServiceSid;
-       
+         /*
       const client = require('twilio')(accountSid, authToken); 
-      /*
+    
       client.messages 
             .create({ 
                body: 'clike the link ==> one more test http://192.168.86.126:3006/',  
