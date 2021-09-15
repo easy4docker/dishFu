@@ -16,25 +16,28 @@ class Admin {
       result += characters.charAt(Math.floor(Math.random() *  charactersLength));
    }
    return result;
-}
-  checkPhone() {
+  }
+  checkPhone(callback) {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
     connection.connect();
     const sql = "SELECT * FROM admin WHERE `phone` = '" + me.req.body.data.phone + "'";
     connection.query(sql, function (err, result, fields) {
       if (err) {
-        me.res.send({status: 'failure', message:err.message});
+        callback({status: 'failure', message:err.message});
       } else {
         if (result && result.length) {
-          me.res.send({status: 'success', data: result});
+          callback({status: 'success', data: result});
         } else {
-          me.res.send({status: 'failure', message:'The phone ' + me.req.body.data.phone + ' is not authrized.'});
+          callback({status: 'failure', message:'The phone ' + me.req.body.data.phone + ' is not authrized.'});
         }
       }
     });
     connection.end();
-
+  }
+  processPhone(data) {
+    const me = this;
+    me.res.send(data);
   }
 
   getTargetSocket() {
