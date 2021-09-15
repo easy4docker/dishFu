@@ -45,7 +45,7 @@ class Admin {
       const accountSid = twilioCFG.accountSid; 
       const authToken = twilioCFG.authToken; 
       const messagingServiceSid = twilioCFG.messagingServiceSid;
-      
+      /*
       const client = require('twilio')(accountSid, authToken); 
 
       client.messages 
@@ -57,7 +57,7 @@ class Admin {
             .then(message => console.log(message.sid)) 
             .done();
 
-  
+  */
      
        me.res.send({status: 'failure', message: '==' + JSON.stringify(twilioCFG)});
     }
