@@ -16,5 +16,4 @@ RUN (crontab -l ; echo "*/15 * * * * sh /var/cronJobs/cron15Mins.sh >> /var/log/
 RUN (crontab -l ; echo "*/30 * * * * sh /var/cronJobs/cron30Mins.sh >> /var/log/cron30Mins.log") | crontab
 RUN (crontab -l ; echo "3 * * * * sh /var/cronJobs/cron1hr.sh >> /var/log/cron1hr.log") | crontab
 
-# CMD cron -f
-CMD sh /var/cronJobs/cronOnboot.sh
+CMD cron -f
