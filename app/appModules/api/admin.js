@@ -5,9 +5,9 @@ class Admin {
     this.next = next;
     this.mysql = require('mysql');
     const config = this.req.app.get('config');
-    this.rootpath = config;
+    this.rootpath = config.root;
     delete require.cache[config.root +'/config/mysql.json'];
-    this.cfg = require(config.root +'/config/mysql.json').devDB;;
+    this.cfg = require(config.root +'/config/mysql.json').devDB;
   }
   makeid(length) {
     var result           = '';
@@ -41,6 +41,7 @@ class Admin {
     if (data.status !== 'success') {
       me.res.send(data);
     } else {
+   //   const  twilioCFG = require(me.rootpath +'/config/mysql.json').devDB;
       const accountSid = ''; 
       const authToken = ''; 
       // const client = require('twilio')(accountSid, authToken); 
