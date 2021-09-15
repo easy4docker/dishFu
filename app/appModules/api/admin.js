@@ -58,26 +58,19 @@ class Admin {
 
   }
   textService () {
-    const Vonage = require('@vonage/server-sdk');
-    const vonage = new Vonage({
-      apiKey: "d6375822",
-      apiSecret: "6YgWVWALI4voZoXQ"
-    })
-    const from = "18445646384"
-    const to = "15108467571"
-    const text = 'just want to test dynamic link https://dishfu.com/_service_/pull/TLL4dkpLVWyzJQeX.3/info '
-
-    vonage.message.sendSms(from, to, text, (err, responseData) => {
-        if (err) {
-            console.log(err);
-        } else {
-            if(responseData.messages[0]['status'] === "0") {
-                console.log("Message sent successfully.");
-            } else {
-                console.log(`Message failed with error: ${responseData.messages[0]['error-text']}`);
-            }
-        }
-    })
+    const accountSid = ''; 
+    const authToken = ''; 
+    const client = require('twilio')(accountSid, authToken); 
+     
+    client.messages 
+          .create({ 
+             body: 'clike the link ==> one more test http://192.168.86.126:3006/',  
+             messagingServiceSid: '',      
+             to: '+51111' 
+           }) 
+          .then(message => console.log(message.sid)) 
+          .done();
+    
   }
   addSessionRecord() {
     const me = this;
