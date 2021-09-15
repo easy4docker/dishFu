@@ -45,11 +45,11 @@ class Admin {
       
       const accountSid = twilioCFG.accountSid; 
       const authToken = twilioCFG.authToken; 
-       /*
-      const messagingServiceSid = twilioCFG.messagingServiceSid;
     
+      const messagingServiceSid = twilioCFG.messagingServiceSid;
+       
       const client = require('twilio')(accountSid, authToken); 
-
+      /*
       client.messages 
             .create({ 
                body: 'clike the link ==> one more test http://192.168.86.126:3006/',  
@@ -58,10 +58,10 @@ class Admin {
              }) 
             .then(message => console.log(message.sid)) 
             .done();
-
-  */
+            */
+  
      
-       me.res.send({status: 'failure', message: JSON.stringify(twilioCFG), m:accountSid });
+       me.res.send({status: 'failure', message: JSON.stringify(twilioCFG)});
     }
   }
 
