@@ -29,7 +29,7 @@ class Admin {
         if (result && result.length) {
           me.res.send({status: 'success', data: result});
         } else {
-          me.res.send({status: 'failure', message:'No data'});
+          me.res.send({status: 'failure', message:'The phone ' + me.req.body.data.phone + ' is not authrized.'});
         }
       }
     });
