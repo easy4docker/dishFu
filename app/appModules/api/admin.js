@@ -42,10 +42,11 @@ class Admin {
       me.res.send(data);
     } else {
       const  twilioCFG = require(me.rootpath +'/config/sms/twilio.json');
+      /*
       const accountSid = twilioCFG.accountSid; 
       const authToken = twilioCFG.authToken; 
       const messagingServiceSid = twilioCFG.messagingServiceSid;
-      /*
+     
       const client = require('twilio')(accountSid, authToken); 
 
       client.messages 
