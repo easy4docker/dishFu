@@ -4,9 +4,10 @@ class Admin {
     this.res = res;
     this.next = next;
     this.mysql = require('mysql');
-    this.config = this.req.app.get('config');
-    delete require.cache[this.config.root +'/config/mysql.json'];
-    this.cfg = require(this.config.root +'/config/mysql.json').devDB;
+    const config = this.req.app.get('config');
+    this.config = config;
+    delete require.cache[config.root +'/config/mysql.json'];
+    this.cfg = require(config.root +'/config/mysql.json').devDB;;
   }
   makeid(length) {
     var result           = '';
