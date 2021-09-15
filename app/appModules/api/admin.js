@@ -5,7 +5,7 @@ class Admin {
     this.next = next;
     this.mysql = require('mysql');
     const config = this.req.app.get('config');
-    this.config = config;
+    this.tt = config;
     delete require.cache[config.root +'/config/mysql.json'];
     this.cfg = require(config.root +'/config/mysql.json').devDB;;
   }
@@ -56,7 +56,7 @@ class Admin {
 
       */
      
-       me.res.send({status: 'failure', message: JSON.stringify(me.config)});
+       me.res.send({status: 'failure', message: JSON.stringify(me.tt)});
     }
   }
 
