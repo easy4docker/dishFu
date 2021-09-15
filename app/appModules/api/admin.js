@@ -41,23 +41,22 @@ class Admin {
     if (data.status !== 'success') {
       me.res.send(data);
     } else {
-   //   const  twilioCFG = require(me.rootpath +'/config/mysql.json').devDB;
-      const accountSid = ''; 
-      const authToken = ''; 
-      // const client = require('twilio')(accountSid, authToken); 
-      /*
-      client.messages 
-            .create({ 
-               body: 'clike the link ==> one more test http://192.168.86.126:3006/',  
-               messagingServiceSid: '',      
-               to: '+' + me.req.body.data.phone 
-             }) 
-            .then(message => console.log(message.sid)) 
-            .done();
+      const  twilioCFG = require(me.rootpath +'/config/sms/twilio.json');
+      const accountSid = twilioCFG.accountSid; 
+      const authToken = twilioCFG.authToken; 
+      const messagingServiceSid = twilioCFG.messagingServiceSid
+      
+      const client = require('twilio')(accountSid, authToken); 
 
-      */
-     
-       me.res.send({status: 'failure', message: '==' + JSON.stringify(me.rootpath)});
+      client.messages.create({ 
+            body: 'clike the link ==> one more test http://192.168.86.126:3006/',  
+            messagingServiceSid: messagingServiceSid,      
+            to: '+' + me.req.body.data.phone 
+          }) 
+        .then(message => console.log(message.sid)) 
+        .done(()=> {
+          me.res.send({status: 'failure', message: '==' + JSON.stringify(twilioCFG)});
+        });
     }
   }
 
