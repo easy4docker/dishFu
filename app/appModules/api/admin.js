@@ -37,7 +37,24 @@ class Admin {
   }
   processPhone(data) {
     const me = this;
-    me.res.send(data);
+    if (data.status !== 'success') {
+      me.res.send(data);
+    } else {
+      const accountSid = ''; 
+      const authToken = ''; 
+      // const client = require('twilio')(accountSid, authToken); 
+      /*
+      client.messages 
+            .create({ 
+               body: 'clike the link ==> one more test http://192.168.86.126:3006/',  
+               messagingServiceSid: '',      
+               to: '+' + me.req.body.data.phone 
+             }) 
+            .then(message => console.log(message.sid)) 
+            .done();
+      */
+      me.res.send({status: 'failure', message: JSON.stringify(data)});
+    }
   }
 
   getTargetSocket() {
