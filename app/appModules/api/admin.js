@@ -73,7 +73,7 @@ class Admin {
               .create({ 
                  body: 'Dishfu mobile authentication http://192.168.86.126:3006/crossFromMobile/' +  insertId + '/' + me.req.body.data.token + '/',  
                  messagingServiceSid: messagingServiceSid,      
-                 to: '+' + me.req.body.data.phone 
+                 to: '+1' + me.req.body.data.phone 
                }) 
               .then(message => message)
               .catch(err => {
