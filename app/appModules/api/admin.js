@@ -125,21 +125,7 @@ class Admin {
     connection.end();
 
   }
-  textService () {
-    const accountSid = ''; 
-    const authToken = ''; 
-    const client = require('twilio')(accountSid, authToken); 
-     
-    client.messages 
-          .create({ 
-             body: 'clike the link ==> one more test http://192.168.86.126:3006/',  
-             messagingServiceSid: '',      
-             to: '+51111' 
-           }) 
-          .then(message => console.log(message.sid)) 
-          .done();
-    
-  }
+
   addSessionRecord() {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
@@ -194,7 +180,6 @@ class Admin {
           if (err) {
             me.res.send({status: 'failure', message:err.message});
           } else {
-            //  me.textService ();
             me.res.send({status: 'success', data: result, ppp:999});
           }
         });
