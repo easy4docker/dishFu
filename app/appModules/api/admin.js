@@ -218,7 +218,7 @@ class Admin {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
     connection.connect();
-    const sql = "SELECT * FROM `adminSession` WHERE `token` = '" + me.req.body.data.token + "' AND `authcode` = '" + me.req.body.data.authcode + "'";
+    const sql = "SELECT * FROM `adminSession` WHERE `authcode` = '" + me.req.body.data.authcode + "'";
     connection.query(sql, function (err, result, fields) {
       if (err) {
         me.res.send({status: 'failure', message:err.message});
