@@ -41,6 +41,9 @@ class Admin {
     if (data.status !== 'success') {
       me.res.send(data);
     } else {
+      addSessionRecord();
+      return true;
+
       const  twilioCFG = require(me.rootpath +'/config/sms/twilio.json');
       
       const accountSid = twilioCFG.accountSid; 
