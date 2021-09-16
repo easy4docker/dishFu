@@ -36,39 +36,58 @@ class Admin {
     });
     connection.end();
   }
+  addIntoAdminSession(callback) {
+    const me = this;
+    const connection = me.mysql.createConnection(me.cfg);
+    connection.connect();
+    const values = [
+      me.req.body.data.phone, me.req.body.data.visitorId, me.req.body.data.token, me.req.body.data.token, me.makeid(32), new Date()
+    ]
+    const sql = "INSERT INTO adminSession (`phone`, `visitorId`, `token`, `socketid`, `authcode`, `created`) VALUES ?";
+    connection.query(sql, [[values]], function (err, result) {
+      if (err) {
+        callback({status: 'failure', message:err.message});
+      } else {
+        callback({status: 'success', data: result});
+      }
+    });
+    connection.end();
+  }
   processPhone(data) {
     const me = this;
     if (data.status !== 'success') {
       me.res.send(data);
     } else {
-      addSessionRecord();
+      me.addSessionRecord(
+        (result)=> {
+          if (result.status !== 'success') {
+              me.res.send(result);
+          } else {
+            const  twilioCFG = require(me.rootpath +'/config/sms/twilio.json');
+            const accountSid = twilioCFG.accountSid; 
+            const authToken = twilioCFG.authToken; 
+            const messagingServiceSid = twilioCFG.messagingServiceSid;
+            const client = require('twilio')(accountSid, authToken); 
+            client.messages 
+              .create({ 
+                 body: 'clike the link =2=> one more test http://192.168.86.126:3006/' +  me.req.body.data.visitorId + '/' + me.req.body.data.token,  
+                 messagingServiceSid: messagingServiceSid,      
+                 to: '+1' + me.req.body.data.phone 
+               }) 
+              .then(message => message)
+              .catch(err => {
+                me.res.send({status: 'failure', message: err.message});
+              }).done((message)=> {
+                if (message) {
+                  me.res.send({status: 'success', data: message});
+                }
+              });
+          }
+        }
+      );
       return true;
 
-      const  twilioCFG = require(me.rootpath +'/config/sms/twilio.json');
-      
-      const accountSid = twilioCFG.accountSid; 
-      const authToken = twilioCFG.authToken; 
-    
-      const messagingServiceSid = twilioCFG.messagingServiceSid;
-         
-      const client = require('twilio')(accountSid, authToken); 
 
-
-      client.messages 
-        .create({ 
-           body: 'clike the link =2=> one more test http://192.168.86.126:3006/',  
-           messagingServiceSid: messagingServiceSid,      
-           to: '+' + me.req.body.data.phone 
-         }) 
-        .then(message => message)
-        .catch(err => {
-          me.res.send({status: 'failure', message: err.message});
-        }).done((message)=> {
-          if (message) {
-            me.res.send({status: 'success', data: message});
-          }
-        });
-        
     }
   }
 
@@ -154,7 +173,7 @@ class Admin {
         });
       } else if (code === 'add') {
         const values = [
-          me.req.body.data.phone, me.req.body.data.visitorId, me.req.body.data.token, me.req.body.data.socketid, me.makeid(32), new Date()
+          me.req.body.data.phone, me.req.body.data.visitorId, me.req.body.data.token, me.req.body.data.token, me.makeid(32), new Date()
         ]
         const sql = "INSERT INTO adminSession (`phone`, `visitorId`, `token`, `socketid`, `authcode`, `created`) VALUES ?";
         connection.query(sql, [[values]], function (err, result) {
