@@ -44,6 +44,9 @@ class RouteService {
   call() {
     const me = this;
     switch(me.req.params.action) {
+      case 'qr' :
+        me.res.send(me.makeid(32));
+        break;
       case 'push':
         me.push(
           (result)=>{
