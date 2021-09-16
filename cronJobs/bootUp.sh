@@ -5,10 +5,10 @@ mkdir -p /var/dishfuPDF/done/
 mkdir -p /var/dishfuPDF/failed/
 cd /var/app 
 # rm -fr /var/app/node_modules/
-#npm audit fix --force
+npm audit fix --force
 #npm audit fix
-# npm install
+npm install
 # npm start &
-cron start &
-echo "==== boot up ==== $(date -u ==="
-npm start
+#cron start &
+#echo "==== boot up ==== $(date -u ==="
+#npm start
