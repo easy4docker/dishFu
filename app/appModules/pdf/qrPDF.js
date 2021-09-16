@@ -40,7 +40,6 @@ class QrPDF {
 
         me.fs.readFile(fnDoc, 'utf-8', (err, doc)=> {
           try {
-            me.res.send(html);
             const html = me.tpl(doc, {linkUrl: linkUrl, qrCode : str});
             me.res.send(html);
           } catch (err) {
