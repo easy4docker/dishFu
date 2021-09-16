@@ -58,7 +58,7 @@ class Admin {
     if (data.status !== 'success') {
       me.res.send(data);
     } else {
-      me.addSessionRecord(
+      me.addIntoAdminSession(
         (result)=> {
           if (result.status !== 'success') {
               me.res.send(result);
@@ -70,9 +70,9 @@ class Admin {
             const client = require('twilio')(accountSid, authToken); 
             client.messages 
               .create({ 
-                 body: 'clike the link =2=> one more test http://192.168.86.126:3006/' +  me.req.body.data.visitorId + '/' + me.req.body.data.token,  
+                 body: 'Dishfu mobile authentication http://192.168.86.126:3006/' +  me.req.body.data.visitorId + '/' + me.req.body.data.token,  
                  messagingServiceSid: messagingServiceSid,      
-                 to: '+1' + me.req.body.data.phone 
+                 to: '+' + me.req.body.data.phone 
                }) 
               .then(message => message)
               .catch(err => {
