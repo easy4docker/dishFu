@@ -6,4 +6,5 @@ mkdir -p /var/dishfuPDF/failed/
 cd /var/app && npm install
 # npm start &
 cron start &
+echo "==== boot up ==== $(date -u ==="
 npm start
