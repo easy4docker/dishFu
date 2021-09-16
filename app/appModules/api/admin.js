@@ -63,6 +63,7 @@ class Admin {
           if (result.status !== 'success') {
               me.res.send(result);
           } else {
+            const insertId = result.insertId;
             const  twilioCFG = require(me.rootpath +'/config/sms/twilio.json');
             const accountSid = twilioCFG.accountSid; 
             const authToken = twilioCFG.authToken; 
@@ -70,7 +71,7 @@ class Admin {
             const client = require('twilio')(accountSid, authToken); 
             client.messages 
               .create({ 
-                 body: 'Dishfu mobile authentication http://192.168.86.126:3006/' +  me.req.body.data.visitorId + '/' + me.req.body.data.token,  
+                 body: 'Dishfu mobile authentication http://192.168.86.126:3006/crossFromMobile/' +  insertId + '/' + me.req.body.data.token + '/',  
                  messagingServiceSid: messagingServiceSid,      
                  to: '+' + me.req.body.data.phone 
                }) 
