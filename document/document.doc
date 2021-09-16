@@ -38,8 +38,12 @@ PART C --- cronJobsmp
     cd auto-approve
     npm init -> create package.jsoncron 
     
-PART D -- PM2
+PART D -- PM2 or forever
 https://pm2.keymetrics.io/
 
 1- add #npm install pm2 -g into Dockerfile
-2- use pm2 start on package.json
+2- #use pm2 start ./bin/www on package.json
+
+https://www.npmjs.com/package/forever
+1- add #npm install forever -g into Dockerfile
+2- #forever start ./bin/www
