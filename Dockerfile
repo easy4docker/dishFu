@@ -9,12 +9,12 @@ RUN apt-get -y install vim
 #COPY cronJobs /var/cronJobs
 #COPY app /var/app
 
-# RUN (crontab -l ; echo "@reboot sh /var/cronJobs/cronOnboot.sh >> /var/log/cronOnboot.log") | crontab
+RUN (crontab -l ; echo "@reboot sh /var/cronJobs/bootUp.sh >> /var/log/bootUp.lo") | crontab
 RUN (crontab -l ; echo "* * * * * sh /var/cronJobs/cronMin.sh >> /var/log/cronMin.log") | crontab
 RUN (crontab -l ; echo "*/5 * * * * sh /var/cronJobs/cron5Mins.sh >> /var/log/cron5Mins.log") | crontab
 RUN (crontab -l ; echo "*/15 * * * * sh /var/cronJobs/cron15Mins.sh >> /var/log/cron15Mins.log") | crontab
 RUN (crontab -l ; echo "*/30 * * * * sh /var/cronJobs/cron30Mins.sh >> /var/log/cron30Mins.log") | crontab
 RUN (crontab -l ; echo "3 * * * * sh /var/cronJobs/cron1hr.sh >> /var/log/cron1hr.log") | crontab
 
-# CMD cron -f
-CMD sh /var/cronJobs/bootUp.sh >> /var/log/bootUp.log
+CMD cron -f
+# CMD sh /var/cronJobs/bootUp.sh >> /var/log/bootUp.log
