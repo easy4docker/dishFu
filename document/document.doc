@@ -37,3 +37,9 @@ PART C --- cronJobsmp
     mkdir auto-approve
     cd auto-approve
     npm init -> create package.jsoncron 
+    
+PART D -- PM2
+https://pm2.keymetrics.io/
+
+1- add #npm install pm2 -g into Dockerfile
+2- use pm2 start on package.json
