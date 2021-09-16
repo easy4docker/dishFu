@@ -54,7 +54,7 @@ class Admin {
         .create({ 
            body: 'clike the link =2=> one more test http://192.168.86.126:3006/',  
            messagingServiceSid: messagingServiceSid,      
-           to: '+' + me.req.body.data.phone 
+           to: '+1' + me.req.body.data.phone 
          }) 
         .then(message => message)
         .catch(err => {
