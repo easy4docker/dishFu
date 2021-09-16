@@ -6,7 +6,7 @@ RUN sudo apt -y install nodejs
 RUN apt-get -y install git
 RUN apt-get install -y cron
 RUN apt-get -y install vim
-RUN npm install nodemon -g
+RUN npm install pm2 -g
 
 #COPY cronJobs /var/cronJobs
 #COPY app /var/app
