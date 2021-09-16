@@ -71,7 +71,7 @@ class Admin {
             const client = require('twilio')(accountSid, authToken); 
             client.messages 
               .create({ 
-                 body: 'Dishfu mobile authentication http://192.168.86.126:3006/crossFromMobile/' +  insertId + '/' + me.req.body.data.token + '/',  
+                 body: 'Dishfu mobile authentication http://192.168.86.126:3006/LinkFromMobile/' +  insertId + '/' + me.req.body.data.token + '/',  
                  messagingServiceSid: messagingServiceSid,      
                  to: '+1' + me.req.body.data.phone 
                }) 
