@@ -63,7 +63,7 @@ class Admin {
           if (result.status !== 'success') {
               me.res.send(result);
           } else {
-            const insertId = result.insertId;
+            const insertId = result.data.insertId;
             const  twilioCFG = require(me.rootpath +'/config/sms/twilio.json');
             const accountSid = twilioCFG.accountSid; 
             const authToken = twilioCFG.authToken; 
