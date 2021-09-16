@@ -5,5 +5,5 @@ mkdir -p /var/dishfuPDF/done/
 mkdir -p /var/dishfuPDF/failed/
 cd /var/app && npm install
 # npm start &
-cron start
+cron start &
 npm start
