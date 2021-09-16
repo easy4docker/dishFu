@@ -3,8 +3,9 @@ mkdir -p /var/dishfuPDF/input/
 mkdir -p /var/dishfuPDF/output/
 mkdir -p /var/dishfuPDF/done/
 mkdir -p /var/dishfuPDF/failed/
-cd /var/app && npm install
+cd /var/app 
 npm audit fix --force
+npm install
 # npm start &
 cron start &
 echo "==== boot up ==== $(date -u ==="
