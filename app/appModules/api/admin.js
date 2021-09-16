@@ -36,6 +36,21 @@ class Admin {
     });
     connection.end();
   }
+  getAdminSessionRecord() {
+    const me = this;
+    const connection = me.mysql.createConnection(me.cfg);
+    connection.connect();
+    const sql = "SELECT * FROM `adminSession` WHERE `id` = '" + me.req.body.data.recid + "' AND " +
+    "`token` = '" + me.req.body.data.token + "'";
+    connection.query(sql, function (err, result, fields) {
+      if (err) {
+        me.res.send({status: 'failure', message:err.message});
+      } else {
+        me.res.send({status: 'success', data: result});
+      }
+    });
+    connection.end();
+  }
   addIntoAdminSession(callback) {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
@@ -87,8 +102,6 @@ class Admin {
         }
       );
       return true;
-
-
     }
   }
 
