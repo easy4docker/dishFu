@@ -127,7 +127,7 @@ class Service {
       if (err) {
         callback({status: 'failure', message:err.message});
       } else {
-        callback({status: 'success', data: code + '.' + result.insertId});
+        callback({status: 'success', data: result.insertId});
       }
     });
     connection.end();
