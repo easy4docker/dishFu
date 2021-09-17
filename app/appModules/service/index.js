@@ -1,4 +1,4 @@
-class RouteService {
+class Service {
   constructor(req, res, next) {
     this.req = req;
     this.res = res;
@@ -129,4 +129,4 @@ class RouteService {
     me.res.send({status: 'failure',  message: (str) ? str : 'Action Error!'});
   }
 }
-module.exports  = RouteService;
+module.exports  = Service;
