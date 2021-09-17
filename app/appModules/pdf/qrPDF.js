@@ -27,7 +27,7 @@ class QrPDF {
   sendPDF() {
     const me = this;
     const fnDoc = __dirname + '/tpl/3stamps.html';
-    const linkUrl = 'http://192.168.86.126:3006/3stamps/'+this.makeid(32);
+    const linkUrl = 'http://192.168.86.126:3006/3Stamps/'+this.makeid(32);
     me.QRCode.toDataURL(linkUrl, { 
       width:256,
       type: 'image/png',
