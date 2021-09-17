@@ -66,6 +66,15 @@ class Service {
           }
         );
         break;
+
+      case 'saveQrScanData':
+        me.saveQrScanData(
+          (result)=>{
+            me.res.send(result);
+          }
+        );
+        break;
+        
       default:  
         me.actionError(); 
     }
