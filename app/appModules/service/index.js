@@ -108,7 +108,7 @@ class Service {
     connection.end();
   }
 
-  saveQrAction(callback) {
+  saveQrScanData(callback) {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
     connection.connect();
