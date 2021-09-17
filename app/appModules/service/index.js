@@ -106,10 +106,27 @@ class RouteService {
       }
     });
     connection.end();
-    }
-    actionError(str) {
-      const me = this;
-      me.res.send({status: 'failure',  message: (str) ? str : 'Action Error!'});
-    }
+  }
+
+  saveQrAction(callback) {
+    const me = this;
+    const connection = me.mysql.createConnection(me.cfg);
+    connection.connect();
+    const sql = "INSERT INTO `qrService` (`code`, actionCode, `data`, `created`) VALUES ?";
+    const values =[me.req.body.code, me.req.body.actionCode, me.req.body.data, new Date()];
+    connection.query(sql, [[values]], function (err, result) {
+      if (err) {
+        callback({status: 'failure', message:err.message});
+      } else {
+        callback({status: 'success', data: code + '.' + result.insertId});
+      }
+    });
+    connection.end();
+  }
+
+  actionError(str) {
+    const me = this;
+    me.res.send({status: 'failure',  message: (str) ? str : 'Action Error!'});
+  }
 }
 module.exports  = RouteService;
