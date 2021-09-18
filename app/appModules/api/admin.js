@@ -31,7 +31,7 @@ class Admin {
           me.processPhone({status: 'success', data: result});
         } else {
           me.processPhone({status: 'failure', message:'The phone ' + me.req.body.data.phone + ' is not authrized.' + 
-          + me.req.originalUrl} });
+          + me.req.originalUrl} );
         }
       }
     });
