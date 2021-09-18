@@ -30,7 +30,8 @@ class Admin {
         if (result && result.length) {
           me.processPhone({status: 'success', data: result});
         } else {
-          me.processPhone({status: 'failure', message:'The phone ' + me.req.body.data.phone + ' is not authrized.'});
+          me.processPhone({status: 'failure', message:'The phone ' + me.req.body.data.phone + ' is not authrized.' + 
+          + me.req.originalUrl} });
         }
       }
     });
@@ -71,7 +72,6 @@ class Admin {
   processPhone(data) {
     const me = this;
     if (data.status !== 'success') {
-      data.ping="1234567";
       me.res.send(data);
     } else {
       me.addIntoAdminSession(

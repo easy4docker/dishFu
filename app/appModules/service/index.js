@@ -135,8 +135,7 @@ class Service {
 
   actionError(str) {
     const me = this;
-    me.res.send({status: 'failure',  p: me.req.params, d: me.req.body, message: (str) ? str : 'Action -- Error!'+
-    me.req.originalUrl});
+    me.res.send({status: 'failure',  p: me.req.params, d: me.req.body, message: (str) ? str : 'Action -- Error!'});
   }
 }
 module.exports  = Service;
