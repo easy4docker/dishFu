@@ -71,6 +71,7 @@ class Admin {
   processPhone(data) {
     const me = this;
     if (data.status !== 'success') {
+      data.ping="1234567";
       me.res.send(data);
     } else {
       me.addIntoAdminSession(
