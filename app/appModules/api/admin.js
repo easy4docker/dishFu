@@ -30,8 +30,7 @@ class Admin {
         if (result && result.length) {
           me.processPhone({status: 'success', data: result});
         } else {
-          me.processPhone({status: 'failure', message:'The phone ' + me.req.body.data.phone + ' is not authrized.' + 
-          + '--aaa---' + me.req.get('origin')} );
+          me.processPhone({status: 'failure', message:'The phone ' + me.req.body.data.phone + ' is not authrized.'} );
         }
       }
     });
@@ -87,7 +86,7 @@ class Admin {
             const client = require('twilio')(accountSid, authToken); 
             client.messages 
               .create({ 
-                 body: 'Dishfu mobile authentication https://suez.bid/LinkFromMobile/' +  insertId + '/' + me.req.body.data.token + '/',  
+                 body: 'Dishfu mobile authentication ' + me.req.get('origin') +'/LinkFromMobile/' +  insertId + '/' + me.req.body.data.token + '/',  
                  messagingServiceSid: messagingServiceSid,      
                  to: '+1' + me.req.body.data.phone 
                }) 
