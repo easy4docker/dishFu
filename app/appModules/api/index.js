@@ -10,8 +10,8 @@ module.exports = (req, res, next)=> {
     }
   }
   const adminModule = (module,req, res, next)=> {
-    delete require.cache[__dirname +'/admin/' + module + '.js'];
-    const M = require(__dirname +'/admin' + module + '.js');
+    delete require.cache[__dirname +'/adminApp/' + module + '.js'];
+    const M = require(__dirname +'/adminApp/' + module + '.js');
     const m = new M(req, res, next);
     if (!!req.body.action && typeof m[req.body.action] === 'function') {
       m[req.body.action]();
