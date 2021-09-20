@@ -28,6 +28,7 @@ module.exports = (req, res, next)=> {
       appModule(req.params.module, req, res, next);
       break
     case 'admin':
+    case 'usersAdmin':
       adminModule(req.params.module, req, res, next);
       break
 
