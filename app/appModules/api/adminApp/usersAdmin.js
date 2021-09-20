@@ -29,7 +29,8 @@ class usersAdmin {
       const me = this;
       const connection = me.mysql.createConnection(me.cfg);
       connection.connect();
-      const sql = "SELECT * FROM `authUsers` WHERE `id` = '" + me.req.body.id + "'"
+      const sql = "SELECT * FROM `authUsers` WHERE `id` = '" + 
+        (!me.req.body || !me.req.body.data) ? '' : me.req.body.data.id + "'"
       connection.query(sql, function (err, result, fields) {
         if (err) {
           me.res.send({status: 'failure', message:err.message});
