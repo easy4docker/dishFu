@@ -1,4 +1,4 @@
-class Admin {
+class Admins {
   constructor(req, res, next) {
     this.req = req;
     this.res = res;
@@ -222,4 +222,4 @@ class Admin {
     me.res.send({status: 'failure',  message: 'Action Error!'});
   }
 }
-module.exports  = Admin;
+module.exports  = Admins;
