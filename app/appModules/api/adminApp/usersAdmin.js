@@ -25,6 +25,22 @@ class usersAdmin {
       });
       connection.end();
     }
+    getAuthUserById() {
+      const me = this;
+      const connection = me.mysql.createConnection(me.cfg);
+      connection.connect();
+      const sql = "SELECT * FROM `authUsers` WHERE `id` = '" + me.req.body.id + "'"
+      connection.query(sql, function (err, result, fields) {
+        if (err) {
+          me.res.send({status: 'failure', message:err.message});
+        } else {
+          if (result && result.length) {
+            me.res.send({status: 'success', data: result});
+          }
+        }
+      });
+      connection.end();
+    }
   }
   module.exports  = usersAdmin;
   
