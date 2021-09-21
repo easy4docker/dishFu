@@ -31,10 +31,7 @@ class AdminService {
         me.fs.readFile(fnDoc, 'utf-8', (err, doc)=> {
           try {
             const html = me.tpl(doc, {linkUrl: linkUrl, qrCode : str});
-            const htmlFn = '/var/_shared/PDF/input/foodieAuthMail.html';
-            me.fs.writeFile(htmlFn, html, (err, doc)=> {
-              me.res.send(html);
-            });
+            me.res.send(html);
           } catch (err) {
             me.res.send(err.message + '=>' + doc);
           }
