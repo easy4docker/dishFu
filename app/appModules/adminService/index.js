@@ -16,7 +16,7 @@ class AdminService {
   }
   sendPDF(rec) {
     const me = this;
-    const fnDoc = __dirname + '/tpl/mailQrCodeDoc.html';
+    const fnDoc = __dirname + '/tpl/foodieAuthMail.html';
     const linkUrl = 'http://192.168.86.126:3006/adminAuth/';
     me.QRCode.toDataURL(linkUrl, { 
       width:256,
@@ -31,7 +31,7 @@ class AdminService {
         me.fs.readFile(fnDoc, 'utf-8', (err, doc)=> {
           try {
             const html = me.tpl(doc, {linkUrl: linkUrl, qrCode : str});
-            const htmlFn = '/var/_shared/PDF/input/authUserMail.html';
+            const htmlFn = '/var/_shared/PDF/input/foodieAuthMail.html';
             me.fs.writeFile(htmlFn, html, (err, doc)=> {
               me.res.send(html);
             });
