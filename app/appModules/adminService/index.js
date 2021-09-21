@@ -11,37 +11,10 @@ class AdminService {
   call() {
     const me = this;
     switch(me.req.params.action) {
-      case 'qr' :
-        me.res.send('me.makeid(32)');
+      case 'authedUser' :
+        me.res.send('me.makeid(32)--');
         break;
-      case 'push':
-        me.push(
-          (result)=>{
-            me.res.send(result);
-          }
-        );
-        break;
-      case 'pull':
-        me.pull(
-          (result)=>{
-            if (result.status === 'success' && result.data) {
-              me.res.writeHead(302, {"Location": result.data.data});
-              me.res.end();
-            } else {
-              me.res(result);
-            }
-          }
-        );
-        break;
-
-      case 'saveQrScanData':
-        me.saveQrScanData(
-          (result)=>{
-            me.res.send(result);
-          }
-        );
-        break;
-        
+     
       default:  
         me.actionError(); 
     }
