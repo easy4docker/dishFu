@@ -30,10 +30,10 @@ class usersAdmin {
       const connection = me.mysql.createConnection(me.cfg);
       connection.connect();
       const sql = "SELECT * FROM `authUsers` WHERE `id` = '" + 
-        (!me.req.body || !me.req.body.data) ? '' : me.req.body.data.id + "'"
+        (!me.req.body || !me.req.body.data ? '' : me.req.body.data.id + "'");
       connection.query(sql, function (err, result, fields) {
         if (err) {
-          me.res.send({status: 'failure', message:err.message});
+          me.res.send({status: 'failure', message:err.message, ppp:sql});
         } else {
           if (result && result.length) {
             me.res.send({status: 'success', data: result});
