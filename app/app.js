@@ -9,7 +9,7 @@ var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/api');
 var pdfRouter = require('./routes/pdf');
 var serviceRouter = require('./routes/service');
-var adminServiceRouter = require('./routes/service');
+var adminServiceRouter = require('./routes/adminService');
 
 const app = express();
 
