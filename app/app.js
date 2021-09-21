@@ -9,7 +9,6 @@ var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/api');
 var pdfRouter = require('./routes/pdf');
 var serviceRouter = require('./routes/service');
-var adminServiceRouter = require('./routes/adminService');
 
 const app = express();
 
@@ -36,7 +35,6 @@ app.use('/users', usersRouter);
 app.use('/api', apiRouter);
 app.use('/pdf', pdfRouter);
 app.use('/_service_', serviceRouter);
-app.use('/_adminservice_', adminServiceRouter);
 
 
 /*
