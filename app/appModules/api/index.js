@@ -32,6 +32,14 @@ module.exports = (req, res, next)=> {
       adminModule(req.params.module, req, res, next);
       break
 
+    case 'getMainIp':
+      const fs = require('fs');
+      fs.readFile('/var/_ROOTENV/mainip.data', 'utf-8', (err, data)=>{
+        res.send((err) ? {status:'failure', message: err.message } : {status:'success', data: data});
+      })
+      
+      break
+
     default: 
       res.send({status: 'failure', message: 'wrong or missing module!'});
     break;
