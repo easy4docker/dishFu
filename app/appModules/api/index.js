@@ -34,7 +34,7 @@ module.exports = (req, res, next)=> {
 
     case 'getMainIp':
       const fs = require('fs');
-      const connection = req.app.get('dbConnection');
+      const connection = me.req.app.get('dbConnection');
       connection.connect();
       const sql = "SHOW TABLES";
       /*
