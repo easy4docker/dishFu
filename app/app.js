@@ -18,7 +18,11 @@ const app = express();
 
 app.all('*', function(req, res, next) {
   const _dbConfig = require(__dirname +'/config/mysql/dev/dbConfig.json');
-  req.app.set('dbConfig', _dbConfig);
+  req.app.set('dbConfig', '_dbConfig');
+
+  app.set('views', path.join(__dirname, 'views'));
+  app.set('view engine', 'jade');
+
   next();
 });
 
@@ -30,8 +34,7 @@ app.all('*', function(req, res, next) {
 });
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+
 
 app.use(logger('dev'));
 app.use(express.json());
