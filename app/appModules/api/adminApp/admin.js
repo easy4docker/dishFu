@@ -3,11 +3,6 @@ class Admins {
     this.req = req;
     this.res = res;
     this.next = next;
-    this.mysql = require('mysql');
-    const config = this.req.app.get('config');
-    this.rootpath = config.root;
-    delete require.cache[config.root +'/config/mysql/dev/dbConfig.json'];
-    this.cfg = require(config.root +'/config/mysql/dev/dbConfig.json');
 
   }
   makeid(length) {
@@ -21,10 +16,8 @@ class Admins {
   }
   checkPhone() {
     const me = this;
-    const connection = me.mysql.createConnection(me.cfg);
-    connection.connect();
-    const sql = "SELECT * FROM admin WHERE `phone` = '" + me.req.body.data.phone + "'";
-    connection.query(sql, function (err, result, fields) {
+    const eng = me.req.app.get('mysqlEngine');
+    eng.queryOnly('SELECT * FROM admin WHERE `phone` = "' + me.req.body.data.phone + '"', (result)=> {
       if (err) {
         me.processPhone({status: 'failure', message:err.message});
       } else {
@@ -35,7 +28,6 @@ class Admins {
         }
       }
     });
-    connection.end();
   }
   getAdminSessionRecord() {
     const me = this;
