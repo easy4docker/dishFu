@@ -15,7 +15,7 @@ var adminServiceRouter = require('./routes/adminService');
 const app = express();
 
 app.all('*', function(req, res, next) {
-  const MYSQLENGINE = require('mysqlEngine');
+  const MYSQLENGINE = require('./mysqlEngine');
   const eng = new MYSQLENGINE();
   // const _dbConfig = require('/var/_config/mysql/dev/dbConfig.json');
   req.app.set('mysqlEngine', eng);

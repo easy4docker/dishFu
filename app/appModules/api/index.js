@@ -35,13 +35,13 @@ module.exports = (req, res, next)=> {
     case 'getMainIp':
       const fs = require('fs');
       /*
-      const connection = req.app.get('dbConnection');
+      const connection = req.app.get('mysqlEngine').connection;
       connection.connect();
       const sql = "SHOW TABLES";
       */
       fs.readFile('/var/_ROOTENV/mainip.data', 'utf-8', (err, data)=>{
         res.send((err) ? {status:'failure', message: err.message } : {status:'success', 
-          dbConfig : req.app.get('dbConfig'),
+          dbConfig : req.app.get('mysqlEngine').niu,
           data: data.replace(/^\s+|\s+$/gm,'')});
       })
 
