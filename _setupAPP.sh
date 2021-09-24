@@ -23,9 +23,11 @@ docker network create \
     network_dishfu &> /dev/null
 
 
-docker run -v "${FULLDIR}/cronJobs":/var/cronJobs -v "${FULLDIR}/app":/var/app -v "${FULLDIR}/logApp":/var/log \
+docker run -v "${FULLDIR}/cronJobs":/var/cronJobs -v "${FULLDIR}/app":/var/app \
+    -v "${FULLDIR}/logApp":/var/log \
     -v ${ROOTDIR}/config/app:/var/_config \
     -v ${ROOTDIR}/_ROOTENV:/var/_ROOTENV \
+    -v ${ROOTDIR}/_cacheData:/var/_CACHEDATA \
     -p 3001:3000  \
     --network network_dishfu --restart on-failure \
     --name dishfu-app-container -d dishfu-app-image
