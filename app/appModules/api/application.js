@@ -33,4 +33,4 @@ class Application {
     me.res.send({status: 'failure',  message: 'Action Error!'});
   }
 }
-export default Application;
+module.exports  = Application;
