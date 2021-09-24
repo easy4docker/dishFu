@@ -18,7 +18,7 @@ const app = express();
 
 app.all('*', function(req, res, next) {
   const _dbConfig = require(__dirname +'/config/mysql/dev/dbConfig.json');
-  app.set('dbConfig', _dbConfig);
+  req.app.set('dbConfig', _dbConfig);
   next();
 });
 
