@@ -6,10 +6,12 @@ module.exports = class mysqlEngine {
     }
     queryAll(sqlQ, callback) {
         const me = this;
+
         me.connection.connect();
         const  q = [];
-        for (let sql in sqlQ) {
-            q.push(me.queryPromise(sql));
+        for (let o in sqlQ) {
+            q.push(me.queryPromise(sqlQ[o]));
+            
         }
         Promise.all(q).then((values) => {
             me.connection.end();
