@@ -64,3 +64,10 @@ module.exports = class mysqlEngine {
         return true;
     }
 }
+/*---
+    sqlQ could be string array or
+    {sql : sql,
+    validation : (result) => {
+        return true or { message: 'bla bla'}
+    }}
+*/
