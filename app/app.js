@@ -13,7 +13,7 @@ var serviceRouter = require('./routes/service');
 var adminServiceRouter = require('./routes/adminService');
 
 const app = express();
-
+const mysql = require('mysql');
 
 app.all('*', function(req, res, next) {
   const _dbConfig = require('/var/_config/mysql/dev/dbConfig.json');
@@ -23,6 +23,8 @@ app.all('*', function(req, res, next) {
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'jade');
 
+  const dbConnection = mysql.createConnection(_dbConfig);
+  req.app.set('dbConnection', dbConnection);
   next();
 });
 
