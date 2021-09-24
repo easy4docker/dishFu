@@ -45,13 +45,13 @@ module.exports = (req, res, next)=> {
       })
 */
       connection.query(sql, function (err, result) {
+        connection.end();
         if (err) {
           res.send({status: 'failure', message:err.message});
         } else {
           res.send({status: 'success', data: result});
         }
       });
-      connection.end();      
       break
 
     default: 
