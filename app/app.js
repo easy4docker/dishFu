@@ -15,10 +15,11 @@ var adminServiceRouter = require('./routes/adminService');
 const app = express();
 
 app.all('*', function(req, res, next) {
+  delete require.cache[__dirname +'/mysqlEngine.js'];
   const MYSQLENGINE = require('./mysqlEngine');
   const eng = new MYSQLENGINE();
-  // const _dbConfig = require('/var/_config/mysql/dev/dbConfig.json');
   req.app.set('mysqlEngine', eng);
+  
   // view engine setup
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'jade');
