@@ -4,7 +4,7 @@
         "ipfs" : "QmNzCw8ydzaZ48kCm9HQSjqrhppuRtSMzFYT1e3f3fciTe",
         "name" :"Sichuan Crispy Chicken",
         "description" : "Once the weather warms up in the South, it's officially picnic season. Break out the checkered blankets and Tupperware, and get outside to enjoy the great outdoors. Once you've picked your main dish, round out your meal with our collection of 15 Southern picnic side dishes. From creamy slaw to crunchy cucumber salad, we've got all your cravings covered. ",
-        "rating": 5
+        "price": 13.5
       },
       {
         "image" : "menu_image2.png",
@@ -53,7 +53,7 @@
         "ipfs" : "QmPAaxDrgwpKcydQZ44SxFLDq3RZASaB2xgxSAw8ov4bKA",
         "name" : "Beef over Curry-Spiced Rice",
         "description" : "Once the weather warms up in the South, it's officially picnic season. Break out the checkered blankets and Tupperware, and get outside to enjoy the great outdoors. Once you've picked your main dish, round out your meal with our collection of 15 Southern picnic side dishes. From creamy slaw to crunchy cucumber salad, we've got all your cravings covered. ",
-        "rating": 3.5
+        "price": 13.5
       },
       {
         "image" : "menu_image3.png",
