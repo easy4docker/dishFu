@@ -17,14 +17,10 @@ const mysql = require('mysql');
 
 app.all('*', function(req, res, next) {
   const _dbConfig = require('/var/_config/mysql/dev/dbConfig.json');
-  req.app.set('dbConfig', _dbConfig);
-  
+  req.app.set('dbConnection', mysql.createConnection(_dbConfig));
   // view engine setup
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'jade');
-
-  const dbConnection = mysql.createConnection(_dbConfig);
-  req.app.set('dbConnection', dbConnection);
   next();
 });
 
