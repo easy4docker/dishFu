@@ -65,7 +65,8 @@ module.exports = class mysqlEngine {
            
         exe.then((result) => {
             me.connection.end();
-            callback(ErrorMessage.length ? ErrorMessage : result);
+            callback(ErrorMessage.length ? {status: 'failure', message : ErrorMessage} : 
+                { status: 'failure', result : result });
         });
         return true;
     }
@@ -76,4 +77,8 @@ module.exports = class mysqlEngine {
     validation : (result) => {
         return true or { message: 'bla bla'}
     }}
+    querySerial : will stop once any
+    ueryParallal : will run all
+    queryOnly( : run once
+
 */
