@@ -6,12 +6,10 @@ module.exports = class mysqlEngine {
     }
     queryParallal(sqlQ, callback) {
         const me = this;
-
         me.connection.connect();
         const  q = [];
         for (let o in sqlQ) {
             q.push(me.queryPromise(sqlQ[o]));
-            
         }
         Promise.all(q).then((values) => {
             me.connection.end();
