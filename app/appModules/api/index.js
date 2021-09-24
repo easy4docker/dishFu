@@ -34,23 +34,16 @@ module.exports = (req, res, next)=> {
 
     case 'getMainIp':
       const fs = require('fs');
-      
+      /*
       const eng = req.app.get('mysqlEngine');
       
       eng.querySerial(['SHOW TABLES', 'SHOW DATABASES','DESC authUsers',], (result)=> {
         res.send(result)
-      })
-      /*
-      eng.queryBK('SHOW TABLES', (result)=> {
-        res.send(result)
-      });
-      
+      })*/
       fs.readFile('/var/_ROOTENV/mainip.data', 'utf-8', (err, data)=>{
         res.send((err) ? {status:'failure', message: err.message } : {status:'success', 
-          pp:1,
           data: data.replace(/^\s+|\s+$/gm,'')});
-      });*/
-
+      });
       break
 
     default: 
