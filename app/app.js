@@ -5,7 +5,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 
-app.set('dbConfig', path.join(__dirname, 'views'));
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -22,6 +21,9 @@ app.all('*', function(req, res, next) {
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   next();
 });
+
+app.set('dbConfig', path.join(__dirname, 'views'));
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
