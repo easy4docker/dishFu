@@ -3,7 +3,7 @@ FULLDIR=$(pwd)
 ROOTDIR=$(dirname $(dirname $(pwd)))
 
 cd ${FULLDIR}
-mkdir -p ${FULLDIR}/app/config
+#mkdir -p ${FULLDIR}/app/config
 mkdir -p ${FULLDIR}/logApp
 
 # cp -R ${ROOTDIR}/config/app/mysql.json ${FULLDIR}/app/config/mysql.json
