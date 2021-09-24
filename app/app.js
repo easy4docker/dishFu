@@ -15,15 +15,19 @@ var adminServiceRouter = require('./routes/adminService');
 
 const app = express();
 
+
+app.all('*', function(req, res, next) {
+  const _dbConfig = require(__dirname +'/config/mysql/dev/dbConfig.json');
+  app.set('dbConfig', _dbConfig);
+  next();
+});
+
 app.all('*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   next();
 });
-
-const _dbConfig = require(__dirname +'/config/mysql/dev/dbConfig.json');
-app.set('dbConfig', _dbConfig);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
