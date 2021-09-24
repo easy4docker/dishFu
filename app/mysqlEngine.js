@@ -21,6 +21,7 @@ module.exports = class mysqlEngine {
         
     }
     queryInsert(sql, data, callback) {
+        
         const me = this;
         me.connection.connect();
         me.connection.query(sql, data, (err, result)=> {
