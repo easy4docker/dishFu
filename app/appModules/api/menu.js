@@ -34,12 +34,12 @@ class  Menu {
     });
     connection.end();
   }
-  getMenu() {
+  getList() {
     const me = this;
     me.res.sendFile('/var/_appData/default/menuList.json');
   }
 
-  getList() {
+  getListBK() {
     const me = this;
     const eng = me.req.app.get('mysqlEngine');
     eng.queryOnly('SELECT * FROM `menu` limit 100', (result)=> {
