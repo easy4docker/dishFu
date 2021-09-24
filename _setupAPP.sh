@@ -7,7 +7,7 @@ mkdir -p ${FULLDIR}/app/config
 mkdir -p ${FULLDIR}/logApp
 
 # cp -R ${ROOTDIR}/config/app/mysql.json ${FULLDIR}/app/config/mysql.json
-cp -R ${ROOTDIR}/config/app/* ${FULLDIR}/app/config/
+# cp -R ${ROOTDIR}/config/app/* ${FULLDIR}/app/config/
 
 docker stop dishfu-app-container && docker rm dishfu-app-container  && docker image rm dishfu-app-image
 # ---  && docker image prune -f
