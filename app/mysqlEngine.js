@@ -20,6 +20,14 @@ module.exports = class mysqlEngine {
         });
         
     }
+    queryOnly(sql, callback) {
+        const me = this;
+        me.connection.connect();
+        me.connection.query(sql, (err, result)=> {
+            me.connection.end();
+            callback((err) ? {status:'failure', message : err.message} : {status:'success', result : result});
+        });
+    }
     queryPromise(sqlObj) {
         const me = this;
         const sql = (typeof sqlObj === 'string') ? sqlObj : sqlObj.sql;
