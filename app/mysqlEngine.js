@@ -22,42 +22,45 @@ module.exports = class mysqlEngine {
         });
         
     }
-    queryPromise(sql) {
+    queryPromise(sqlObj) {
+        const me = this;
+        const sql = (typeof sqlObj === 'string') ? sqlObj : sqlObj.sql;
+        const validation = (typeof(sqlObj) === 'string') ? false : sqlObj.validation;
         return new Promise((resolve, reject) => {
             me.connection.query(sql, (err, result)=> {
                 if (err) {
-                    reject(err);
+                    reject({status:'failure', message : err.message});
                 } else {
-                    resolve(result);
+                    const v = (typeof validation !== 'function') ? true : validation(result);
+                    if (v === true) {
+                        resolve({status:'success', result : result});
+                    } else {
+                        reject({status:'failure', message : v.message});
+                    }
                 }
             });
         });
-
     }
     querySerial(sqlQ, callback) {
         const me = this;
-        let userIDs = sqlQ;
-
-        const queryPromise = (sql) => {
-            return new Promise((resolve, reject) => {
-                me.connection.query(sql, (err, result)=> {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(result);
-                    }
+        const ErrorMessage = [];
+        me.connection.connect();
+        const exe = sqlQ.reduce((prevPr, nextSql) => {
+            return prevPr.then((acc) => {
+               return (ErrorMessage.length) ? null :  me.queryPromise(nextSql)
+                    .then((resp) => {
+                        if (resp.status !== 'success') {
+                            ErrorMessage.push(resp.message)
+                        }
+                        return [...acc, resp]
+                    }).catch(e => ErrorMessage.push(e.message))
                 });
-            });
-        }
-        [...sqlQ].reduce( (previousPromise, nextSql) => {
-          return previousPromise.then(() => {
-            return me.queryPromise(nextSql);
-          });
-        }, Promise.resolve(null)).then().then((result) => {
-            callback(result)
-        }).catch((error) => {
-            callback(error.message)
-          });
+        }, Promise.resolve([]));
+           
+        exe.then((result) => {
+            me.connection.end();
+            callback(ErrorMessage.length ? ErrorMessage : result);
+        });
         return true;
     }
 }
