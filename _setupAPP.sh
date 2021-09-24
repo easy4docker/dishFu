@@ -24,6 +24,7 @@ docker network create \
 
 
 docker run -v "${FULLDIR}/cronJobs":/var/cronJobs -v "${FULLDIR}/app":/var/app -v "${FULLDIR}/logApp":/var/log \
+    -v ${ROOTDIR}/config/app:/var/_config \
     -v ${ROOTDIR}/_ROOTENV:/var/_ROOTENV \
     -p 3001:3000  \
     --network network_dishfu --restart on-failure \
