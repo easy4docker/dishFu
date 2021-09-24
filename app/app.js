@@ -22,8 +22,7 @@ app.all('*', function(req, res, next) {
   next();
 });
 
-const dbConfig = require(__dirname +'/config/mysql/dev/dbConfig.json');
-app.set('dbConfig', dbConfig);
+app.set('dbConfig', require(__dirname +'/config/mysql/dev/dbConfig.json'));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
