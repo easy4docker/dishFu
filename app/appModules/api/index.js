@@ -34,7 +34,7 @@ module.exports = (req, res, next)=> {
 
     case 'getMainIp':
       const fs = require('fs');
-      const connection = me.req.app.get('dbConnection');
+      const connection = req.app.get('dbConnection');
       connection.connect();
       const sql = "SHOW TABLES";
       /*
@@ -46,9 +46,9 @@ module.exports = (req, res, next)=> {
 */
       connection.query(sql, function (err, result) {
         if (err) {
-          me.res.send({status: 'failure', message:err.message});
+          res.send({status: 'failure', message:err.message});
         } else {
-          me.res.send({status: 'success', data: result});
+          res.send({status: 'success', data: result});
         }
       });
       connection.end();      
