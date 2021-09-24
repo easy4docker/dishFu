@@ -42,7 +42,6 @@ module.exports = (req, res, next)=> {
 */
       fs.readFile('/var/_ROOTENV/mainip.data', 'utf-8', (err, data)=>{
         res.send((err) ? {status:'failure', message: err.message } : {status:'success', 
-          dbConfig : req.app.get('mysqlEngine').niu,
           data: data.replace(/^\s+|\s+$/gm,'')});
       });
       break
