@@ -35,7 +35,9 @@ module.exports = (req, res, next)=> {
     case 'getMainIp':
       const fs = require('fs');
       fs.readFile('/var/_ROOTENV/mainip.data', 'utf-8', (err, data)=>{
-        res.send((err) ? {status:'failure', message: err.message } : {status:'success', data: data.replace(/^\s+|\s+$/gm,'')});
+        res.send((err) ? {status:'failure', message: err.message } : {status:'success', 
+          dbConfig : req.app.get('dbConfig'),
+          data: data.replace(/^\s+|\s+$/gm,'')});
       })
       
       break
