@@ -6,7 +6,7 @@ class Ad {
   }
   homeList() {
     const me = this;
-    me.res.sendFile('/var/_appData/homeAd.json');
+    me.res.sendFile('/var/_appData/default/homeAd.json');
   }
   actionError() {
     const me = this;
