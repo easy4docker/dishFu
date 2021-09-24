@@ -5,8 +5,8 @@ class AdminService {
     this.next = next;
     this.mysql = require('mysql');
     const config = this.req.app.get('config');
-    delete require.cache[config.root +'/config/mysql.json'];
-    this.cfg = require(config.root +'/config/mysql.json').devDB;
+    delete require.cache[config.root +'/config/mysql/dev/dbConfig.json'];
+    this.cfg = require(config.root +'/config/mysql/dev/dbConfig.json');
     this.QRCode = require('qrcode');
     this.fs = require('fs');
   }

@@ -6,8 +6,9 @@ class Admins {
     this.mysql = require('mysql');
     const config = this.req.app.get('config');
     this.rootpath = config.root;
-    delete require.cache[config.root +'/config/mysql.json'];
-    this.cfg = require(config.root +'/config/mysql.json').devDB;
+    delete require.cache[config.root +'/config/mysql/dev/dbConfig.json'];
+    this.cfg = require(config.root +'/config/mysql/dev/dbConfig.json');
+
   }
   makeid(length) {
     var result           = '';
