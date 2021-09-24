@@ -34,16 +34,18 @@ module.exports = (req, res, next)=> {
 
     case 'getMainIp':
       const fs = require('fs');
+      /*
       const connection = req.app.get('dbConnection');
       connection.connect();
       const sql = "SHOW TABLES";
-      /*
+      */
       fs.readFile('/var/_ROOTENV/mainip.data', 'utf-8', (err, data)=>{
         res.send((err) ? {status:'failure', message: err.message } : {status:'success', 
           dbConfig : req.app.get('dbConfig'),
           data: data.replace(/^\s+|\s+$/gm,'')});
       })
-*/
+
+/*
       connection.query(sql, function (err, result) {
         connection.end();
         if (err) {
@@ -52,6 +54,7 @@ module.exports = (req, res, next)=> {
           res.send({status: 'success', data: result});
         }
       });
+      */
       break
 
     default: 
