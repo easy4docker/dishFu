@@ -23,7 +23,7 @@ module.exports = class mysqlEngine {
         
     }
     queryPromise(sql) {
-        const me = this;
+
         return new Promise((resolve, reject) => {
             me.connection.query(sql, (err, result)=> {
                 if (err) {
@@ -34,6 +34,32 @@ module.exports = class mysqlEngine {
             });
         });
 
+    }
+    querySerial(sqlQ, callback) {
+        const me = this;
+        let userIDs = sqlQ;
+
+        let result = [...userIDs].reduce( (previousPromise, nextID) => {
+          return previousPromise.then(() => {
+            return me.queryPromise(nextID);
+          });
+        }, Promise.resolve()); 
+
+        result.then(e => {
+            callback("Resolution is complete! Let's party.")
+          });
+
+        return true;
+        /*
+        const me = this;
+        let vals = sqlQ;
+        let chain = Promise.resolve();
+        for(let val of vals) {
+          chain = chain.then(() => me.queryPromise(val));
+        }
+        chain.then((result) =>{
+            callback(result);
+        });*/
     }
     queryBK(sql, callback) {
         const me = this;

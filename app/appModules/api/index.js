@@ -37,7 +37,7 @@ module.exports = (req, res, next)=> {
       
       const eng = req.app.get('mysqlEngine');
       
-      eng.queryAll(['SHOW TABLES', 'SHOW DATABASES'], (result)=> {
+      eng.querySerial(['SHOW TABLES', 'SHOW DATABASES'], (result)=> {
         res.send(result)
       })
       /*
