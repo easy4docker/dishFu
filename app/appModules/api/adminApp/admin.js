@@ -45,22 +45,16 @@ class Admins {
             const insertId = result.data.insertId;
             const  twilioCFG = require('/var/_config/sms/twilio.json');
 
-
-
-
             const accountSid = twilioCFG.accountSid; 
             const authToken = twilioCFG.authToken; 
             const messagingServiceSid = twilioCFG.messagingServiceSid;
             const client = require('twilio')(accountSid, authToken); 
 
-
-
-
             client.messages 
               .create({ 
                  body: 'Dishfu mobile authentication ' + me.req.get('origin') +'/LinkFromMobile/' +  insertId + '/' + me.req.body.data.token + '/',  
                  messagingServiceSid: messagingServiceSid,      
-                 to: '+1' + me.req.body.data.phone 
+                 to: '+' + me.req.body.data.phone 
                }) 
               .then(message => message)
               .catch(err => {
@@ -98,21 +92,12 @@ class Admins {
 
   getAdminSessionRecord() {
     const me = this;
-    const connection = me.mysql.createConnection(me.cfg);
-    connection.connect();
-    const sql = "SELECT * FROM `adminSession` WHERE `id` = '" + me.req.body.data.recid + "' AND " +
-    "`token` = '" + me.req.body.data.token + "'";
-    connection.query(sql, function (err, result, fields) {
-      if (err) {
-        me.res.send({status: 'failure', message:err.message});
-      } else {
-        me.res.send({status: 'success', data: result});
-      }
+    const eng = me.req.app.get('mysqlEngine');
+    eng.queryOnly( "SELECT * FROM `adminSession` WHERE `id` = '" + me.req.body.data.recid + "' AND " +
+    "`token` = '" + me.req.body.data.token + "'", (resultData)=> {
+        me.res.send(resultData);
     });
-    connection.end();
   }
-
-
 
   getTargetSocket() {
     const me = this;
