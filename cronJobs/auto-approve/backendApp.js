@@ -6,11 +6,11 @@ module.exports = class App extends tools {
         super();
         const p = __dirname.split('/cronJobs/')
         this.config = {
-            root : path.join(__dirname, '..')
+            root : path.join(__dirname, '../..')
         }
-        delete require.cache[this.config.root +'/mysqlEngine.js'];
-        const MYSQLENGINE = require(this.config.root + '/mysqlEngine');
-        const eng = new MYSQLENGINE();
+        delete require.cache[this.config.root +'/app/mysqlEngine.js'];
+        const MYSQLENGINE = require(this.config.root + '/app/mysqlEngine');
+        this.eng = new MYSQLENGINE();
     }
     output() {
         const me = this;
