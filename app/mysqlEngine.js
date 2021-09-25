@@ -6,7 +6,9 @@ module.exports = class mysqlEngine {
     }
     queryParallal(sqlQ, callback) {
         const me = this;
-        me.connection.connect();
+        if (me.connection.state === 'disconnected') {
+            me.connection.connect();
+        }    
         const  q = [];
         for (let o in sqlQ) {
             q.push(me.queryPromise(sqlQ[o]));
@@ -15,24 +17,29 @@ module.exports = class mysqlEngine {
             me.connection.end();
             callback(values);
         }).catch(error => {
-            me.connection.end();
             callback(error);
         });
         
     }
     queryInsert(sql, data, callback) {
         const me = this;
-        me.connection.connect();
+        if (me.connection.state === 'disconnected') {
+            me.connection.connect();
+        }    
         me.connection.query(sql, data, (err, result)=> {
-            me.connection.end();
+            // me.connection.end();
             callback((err) ? {status:'failure', message : err.message} : {status:'success', result : result});
         });
     }
+
+    
     queryOnly(sql, callback) {
         const me = this;
-        me.connection.connect();
+        if (me.connection.state === 'disconnected') {
+            me.connection.connect();
+        }    
         me.connection.query(sql, (err, result)=> {
-            me.connection.end();
+            // me.connection.end();
             callback((err) ? {status:'failure', message : err.message} : {status:'success', result : result});
         });
     }
@@ -40,6 +47,9 @@ module.exports = class mysqlEngine {
         const me = this;
         const sql = (typeof sqlObj === 'string') ? sqlObj : sqlObj.sql;
         const validation = (typeof(sqlObj) === 'string') ? false : sqlObj.validation;
+        if (me.connection.state === 'disconnected') {
+            me.connection.connect();
+        }    
         return new Promise((resolve, reject) => {
             me.connection.query(sql, (err, result)=> {
                 if (err) {
@@ -58,7 +68,9 @@ module.exports = class mysqlEngine {
     querySerial(sqlQ, callback) {
         const me = this;
         const ErrorMessage = [];
-        me.connection.connect();
+        if (me.connection.state === 'disconnected') {
+            me.connection.connect();
+        }    
         const exe = sqlQ.reduce((prevPr, nextSql) => {
             return prevPr.then((acc) => {
                return (ErrorMessage.length) ? null :  me.queryPromise(nextSql)
@@ -72,7 +84,6 @@ module.exports = class mysqlEngine {
         }, Promise.resolve([]));
            
         exe.then((result) => {
-            me.connection.end();
             callback(ErrorMessage.length ? {status: 'failure', message : ErrorMessage} : 
                 { status: 'failure', result : result });
         });

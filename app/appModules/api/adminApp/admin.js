@@ -17,6 +17,7 @@ class Admins {
   checkPhone() {
     const me = this;
     const eng = me.req.app.get('mysqlEngine');
+
     eng.queryOnly('SELECT * FROM admin WHERE `phone` = "' + me.req.body.data.phone + '"', (resultData)=> {
       if (resultData.status !== 'success') {
         me.processPhone(resultData);
@@ -36,6 +37,8 @@ class Admins {
     } else {
       me.addIntoAdminSession(
         (result)=> {
+
+
           if (result.status !== 'success') {
               me.res.send(result);
           } else {
@@ -67,7 +70,7 @@ class Admins {
   }
   addIntoAdminSession(callback) {
     const me = this;
-    const eng = me.req.app.get('mysqlEngine');
+    
     const values = [
       me.req.body.data.phone, 
       me.req.body.data.visitorId, 
@@ -76,6 +79,8 @@ class Admins {
       me.makeid(32), 
       new Date()
     ];
+
+    const eng = me.req.app.get('mysqlEngine');
 
     const sql = "INSERT INTO adminSession (`phone`, `visitorId`, `token`, `socketid`, `authcode`, `created`) VALUES ?";
 
