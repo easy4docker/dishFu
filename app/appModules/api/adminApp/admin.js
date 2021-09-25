@@ -37,15 +37,27 @@ class Admins {
     } else {
       me.addIntoAdminSession(
         (result)=> {
+
+
           if (result.status !== 'success') {
               me.res.send(result);
           } else {
             const insertId = result.data.insertId;
-            const  twilioCFG = require(me.rootpath +'/config/sms/twilio.json');
+            const  twilioCFG = require('/var/_config/sms/twilio.json');
+
+
+
+            me.res.send({ resultData: twilioCFG } );
+            return true;
+
             const accountSid = twilioCFG.accountSid; 
             const authToken = twilioCFG.authToken; 
             const messagingServiceSid = twilioCFG.messagingServiceSid;
             const client = require('twilio')(accountSid, authToken); 
+
+
+
+
             client.messages 
               .create({ 
                  body: 'Dishfu mobile authentication ' + me.req.get('origin') +'/LinkFromMobile/' +  insertId + '/' + me.req.body.data.token + '/',  
@@ -82,7 +94,6 @@ class Admins {
     const sql = "INSERT INTO adminSession (`phone`, `visitorId`, `token`, `socketid`, `authcode`, `created`) VALUES ?";
 
     eng.queryInsert(sql, [[values]], (resultData)=> {
-      me.res.send({ resultData: resultData} );
       callback((resultData.status !== 'success') ? resultData: {status: 'success', data: resultData.result});
     });
   }
