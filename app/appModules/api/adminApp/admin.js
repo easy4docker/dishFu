@@ -69,15 +69,25 @@ class Admins {
     const me = this;
     const eng = me.req.app.get('mysqlEngine');
     const values = [
-      me.req.body.data.phone, me.req.body.data.visitorId, me.req.body.data.token, me.req.body.data.token, me.makeid(32), new Date()
-    ]
+      me.req.body.data.phone, 
+      me.req.body.data.visitorId, 
+      me.req.body.data.token, 
+      me.req.body.data.token, 
+      me.makeid(32), 
+      new Date()
+    ];
+
     const sql = "INSERT INTO adminSession (`phone`, `visitorId`, `token`, `socketid`, `authcode`, `created`) VALUES ?";
 
-    eng.queryInsert(sql,  [[values]], (resultData)=> {
-      callback((resultData.status !== 'success') ? resultData: {status: 'success', data: resultData.result});
+    eng.queryInsert(sql, [[values]], (resultData)=> {
+      me.res.send({data:sql});
+      return true;
+      /*
+      me.res.send({ resultData: resultData} );*/
+      // callback((resultData.status !== 'success') ? resultData: {status: 'success', data: resultData.result});
     });
   }
-  
+
   getAdminSessionRecord() {
     const me = this;
     const connection = me.mysql.createConnection(me.cfg);
