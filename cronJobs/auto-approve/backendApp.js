@@ -16,7 +16,7 @@ module.exports = class App extends tools {
         const me = this;
         const sql = "SELECT * FROM `application` WHERE `status` = 0 AND `type` = 'foodie' limit 100";
         this.eng.queryOnly(sql, (resultData)=> {
-          if (resultData.status === 'success') {
+          if (resultData.status !== 'success') {
             console.log(resultData);
           } else {
             if (resultData.result.length) {
