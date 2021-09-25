@@ -79,11 +79,9 @@ class Admins {
     ];
 
     const eng = me.req.app.get('mysqlEngine');
-
     const sql = "INSERT INTO adminSession (`phone`, `visitorId`, `token`, `socketid`, `authcode`, `created`) VALUES ?";
 
     eng.queryInsert(sql, [[values]], (resultData)=> {
-
       me.res.send({ resultData: resultData} );
       callback((resultData.status !== 'success') ? resultData: {status: 'success', data: resultData.result});
     });
