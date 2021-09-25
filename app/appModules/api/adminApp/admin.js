@@ -198,15 +198,7 @@ class Admins {
     const eng = me.req.app.get('mysqlEngine');
     const sql = "SELECT * FROM `adminSession` WHERE `authcode` = '" + me.req.body.data.authcode + "'";
     eng.queryOnly(sql, (resultData)=> {
-      if (resultData.status !== "success") {
-        me.res.send(resultData);
-      } else {
-        if (resultData && resultData.result && resultData.result.length) {
-          me.res.send({status: 'success', data: result.data});
-        } else {
-          me.res.send({status: 'failure', message:'No data'});
-        }
-      }
+      me.res.send(resultData);
     });
   }
   actionError() {
