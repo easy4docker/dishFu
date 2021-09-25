@@ -101,23 +101,14 @@ class Admins {
 
   getTargetSocket() {
     const me = this;
-    const connection = me.mysql.createConnection(me.cfg);
-    connection.connect();
+    const eng = me.req.app.get('mysqlEngine');
+
     const sql = "SELECT * FROM `adminSession` WHERE `phone` = '" + me.req.body.data.phone + "' AND " +
         "`token` = '" + me.req.body.data.token + "'"
-    connection.query(sql, function (err, result, fields) {
-      if (err) {
-        me.res.send({status: 'failure', message:err.message});
-      } else {
-        if (result && result.length) {
-          me.res.send({status: 'success', data: result});
-        } else {
-          me.res.send({status: 'failure', message:'No data'});
-        }
-      }
+    
+    eng.queryOnly( sql, (resultData)=> {
+        me.res.send(resultData);
     });
-    connection.end();
-
   }
 
   addSessionRecord() {
