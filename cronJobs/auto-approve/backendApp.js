@@ -1,33 +1,29 @@
 const tools = require('./tools');
 const md5 = require('md5');
+const path = require('path');
 module.exports = class App extends tools {
     constructor() {
         super();
         const p = __dirname.split('/cronJobs/')
         this.config = {
-            root : p[0],
-            isDocker: /^\/var/.test(p[0]) ? true : false
+            root : path.join(__dirname, '..')
         }
-        this.dbCfg = require(this.config.root + '/app/config/mysql.json').devDB;
-        this.mysql = require('mysql');
-        this.dbCfg.host = (this.config.isDocker) ?  this.dbCfg.host : '127.0.0.1';
+        delete require.cache[this.config.root +'/mysqlEngine.js'];
+        const MYSQLENGINE = require(this.config.root + '/mysqlEngine');
+        const eng = new MYSQLENGINE();
     }
     output() {
         const me = this;
-        const connection = me.mysql.createConnection(me.dbCfg);
-        connection.connect();
         const sql = "SELECT * FROM `application` WHERE `status` = 0 AND `type` = 'foodie' limit 100";
-        connection.query(sql, function (err, result) {
-          if (err) {
-            console.log({status: 'failure', message:err.message});
+        this.eng.queryOnly(sql, (resultData)=> {
+          if (resultData.status === 'success') {
+            console.log(resultData);
           } else {
-            if (result.length) {
-              me.insertProcess(result);
+            if (resultData.result.length) {
+              me.insertProcess(resultData.result);
             }
           }
         });
-        connection.end();
-        
     }
     insertProcess(v) {
         const values =[];
@@ -45,33 +41,27 @@ module.exports = class App extends tools {
             cleanList.push(v[i].id);
         }
         const me = this;
-        const connection = me.mysql.createConnection(me.dbCfg);
-        connection.connect();
         const sql = "INSERT INTO authUsers (`" + fields.join('`,`') + "`) VALUES ?";
-        connection.query(sql, [values], function (err, result) {
-            if (err) {
-                console.log({status: 'failure', message:err.message});
-            } else {
-              console.log({status: 'success', data: result});
-              if (cleanList.length) {
-                me.cleanProcess(cleanList)
-              }
+        this.eng.queryInsert(sql,  [values], (resultData)=> {
+          if (resultData.status !== 'success') {
+            console.log(resultData);
+          } else {
+            console.log(resultData);
+            if (cleanList.length) {
+              me.cleanProcess(cleanList)
             }
-          });
-        connection.end();
+          }
+        });
     }
     cleanProcess(v) {
         const me = this;
-        const connection = me.mysql.createConnection(me.dbCfg);
-        connection.connect();
         const sql = "UPDATE `application` SET `status` = 1 WHERE `id` IN (" + v.join(',') + ")";
-        connection.query(sql, function (err, result) {
-            if (err) {
-                console.log('cleanProcess error =>', err.message);
+        this.eng.queryOnly(sql, (resultData)=> {
+            if (resultData.status !== 'success') {
+                console.log('cleanProcess error =>', resultData.message);
             } else {
-              console.log('cleanProcess success =>', result);
+              console.log('cleanProcess success =>', resultData);
             }
           });
-        connection.end();
     }
 }
