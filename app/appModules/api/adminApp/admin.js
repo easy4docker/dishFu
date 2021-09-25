@@ -37,8 +37,6 @@ class Admins {
     } else {
       me.addIntoAdminSession(
         (result)=> {
-
-
           if (result.status !== 'success') {
               me.res.send(result);
           } else {
@@ -85,11 +83,9 @@ class Admins {
     const sql = "INSERT INTO adminSession (`phone`, `visitorId`, `token`, `socketid`, `authcode`, `created`) VALUES ?";
 
     eng.queryInsert(sql, [[values]], (resultData)=> {
-      me.res.send({data:sql});
-      return true;
-      /*
-      me.res.send({ resultData: resultData} );*/
-      // callback((resultData.status !== 'success') ? resultData: {status: 'success', data: resultData.result});
+
+      me.res.send({ resultData: resultData} );
+      callback((resultData.status !== 'success') ? resultData: {status: 'success', data: resultData.result});
     });
   }
 
