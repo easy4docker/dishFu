@@ -17,49 +17,17 @@ class Admins {
   checkPhone() {
     const me = this;
     const eng = me.req.app.get('mysqlEngine');
-    eng.queryOnly('SELECT * FROM admin WHERE `phone` = "' + me.req.body.data.phone + '"', (result)=> {
-      if (err) {
-        me.processPhone({status: 'failure', message:err.message});
+    eng.queryOnly('SELECT * FROM admin WHERE `phone` = "' + me.req.body.data.phone + '"', (resultData)=> {
+      if (resultData.status !== 'success') {
+        me.processPhone(resultData);
       } else {
-        if (result && result.length) {
-          me.processPhone({status: 'success', data: result});
+        if (resultData.result && resultData.result.length) {
+          me.processPhone(resultData);
         } else {
           me.processPhone({status: 'failure', message:'The phone ' + me.req.body.data.phone + ' is not authrized.'} );
         }
       }
     });
-  }
-  getAdminSessionRecord() {
-    const me = this;
-    const connection = me.mysql.createConnection(me.cfg);
-    connection.connect();
-    const sql = "SELECT * FROM `adminSession` WHERE `id` = '" + me.req.body.data.recid + "' AND " +
-    "`token` = '" + me.req.body.data.token + "'";
-    connection.query(sql, function (err, result, fields) {
-      if (err) {
-        me.res.send({status: 'failure', message:err.message});
-      } else {
-        me.res.send({status: 'success', data: result});
-      }
-    });
-    connection.end();
-  }
-  addIntoAdminSession(callback) {
-    const me = this;
-    const connection = me.mysql.createConnection(me.cfg);
-    connection.connect();
-    const values = [
-      me.req.body.data.phone, me.req.body.data.visitorId, me.req.body.data.token, me.req.body.data.token, me.makeid(32), new Date()
-    ]
-    const sql = "INSERT INTO adminSession (`phone`, `visitorId`, `token`, `socketid`, `authcode`, `created`) VALUES ?";
-    connection.query(sql, [[values]], function (err, result) {
-      if (err) {
-        callback({status: 'failure', message:err.message});
-      } else {
-        callback({status: 'success', data: result});
-      }
-    });
-    connection.end();
   }
   processPhone(data) {
     const me = this;
@@ -81,7 +49,7 @@ class Admins {
               .create({ 
                  body: 'Dishfu mobile authentication ' + me.req.get('origin') +'/LinkFromMobile/' +  insertId + '/' + me.req.body.data.token + '/',  
                  messagingServiceSid: messagingServiceSid,      
-                 to: '+1' + me.req.body.data.phone 
+                 to: '+' + me.req.body.data.phone 
                }) 
               .then(message => message)
               .catch(err => {
@@ -97,6 +65,36 @@ class Admins {
       return true;
     }
   }
+  addIntoAdminSession(callback) {
+    const me = this;
+    const eng = me.req.app.get('mysqlEngine');
+    const values = [
+      me.req.body.data.phone, me.req.body.data.visitorId, me.req.body.data.token, me.req.body.data.token, me.makeid(32), new Date()
+    ]
+    const sql = "INSERT INTO adminSession (`phone`, `visitorId`, `token`, `socketid`, `authcode`, `created`) VALUES ?";
+
+    eng.queryInsert(sql,  [[values]], (resultData)=> {
+      callback((resultData.status !== 'success') ? resultData: {status: 'success', data: resultData.result});
+    });
+  }
+  
+  getAdminSessionRecord() {
+    const me = this;
+    const connection = me.mysql.createConnection(me.cfg);
+    connection.connect();
+    const sql = "SELECT * FROM `adminSession` WHERE `id` = '" + me.req.body.data.recid + "' AND " +
+    "`token` = '" + me.req.body.data.token + "'";
+    connection.query(sql, function (err, result, fields) {
+      if (err) {
+        me.res.send({status: 'failure', message:err.message});
+      } else {
+        me.res.send({status: 'success', data: result});
+      }
+    });
+    connection.end();
+  }
+
+
 
   getTargetSocket() {
     const me = this;
