@@ -88,7 +88,6 @@ class Application {
 
         callback({status : 'success', ca :{
           privateKey  : pki.privateKeyToPem(keys.privateKey),
-          publicKey   : pki.publicKeyToPem(keys.publicKey),
           cert        : pki.certificateToPem(cert)
         }});
       } catch (e) {
