@@ -13,33 +13,37 @@ class Application {
     });
   }
 
-  saveToDb(ca) {
-    const me = this;
-    const mapping = {
-      roles : 'roles' ,
-      name : 'name' ,
-      publisher :'visitorId',
-      address: 'address',
-      description: 'description',
-      phone: 'phone',
-      qualification: 'qualification',
-      privateKey : ()=>  'ca.privateKey',
-      publicKey : ()=>  'ca.publicKey',
-      created: ()=>  new Date(),
-      status: ()=> 0
+  saveToDb(cadata) {
+    if (cadata.status === 'failure') {
+        me.res.send(cadata.status)
+    } else {
+      const me = this;
+      const mapping = {
+        roles : 'roles' ,
+        name : 'name' ,
+        publisher :'visitorId',
+        address: 'address',
+        description: 'description',
+        phone: 'phone',
+        qualification: 'qualification',
+        privateKey : ()=>  'ca.privateKey',
+        publicKey : ()=>  'ca.publicKey',
+        created: ()=>  new Date(),
+        status: ()=> 0
+      }
+      const eng = me.req.app.get('mysqlEngine');
+      const sql = "INSERT INTO application (`" + Object.keys(mapping).join('`,`') + "`) VALUES ?";
+      const values =[];
+      for (let k in mapping) {
+        const func = (typeof mapping[k] === 'function') ?  true :  false;
+        values.push((!me.req.body || !me.req.body.data[mapping[k]]) ? (func) ? mapping[k]() : '' 
+            :  me.req.body.data[mapping[k]])
+      }
+      eng.queryInsert(sql, [[values]], (result)=> {
+        result.ca = cadata.ca,
+        me.res.send(result)
+      })
     }
-    const eng = me.req.app.get('mysqlEngine');
-    const sql = "INSERT INTO application (`" + Object.keys(mapping).join('`,`') + "`) VALUES ?";
-    const values =[];
-    for (let k in mapping) {
-      const func = (typeof mapping[k] === 'function') ?  true :  false;
-      values.push((!me.req.body || !me.req.body.data[mapping[k]]) ? (func) ? mapping[k]() : '' 
-          :  me.req.body.data[mapping[k]])
-    }
-    eng.queryInsert(sql, [[values]], (result)=> {
-      result.ca = ca,
-      me.res.send(result)
-    })
   }
   rootPrivateKey(callback) {
     const me = this;
@@ -66,30 +70,29 @@ class Application {
       cert.validity.notAfter = new Date();
       cert.validity.notAfter.setDate(cert.validity.notBefore.getDate()+expd); // give 15 days expiration
 
-      let result = {};
+      const attrs = [
+        {name:'commonName',value: address}
+        ,{name:'countryName',value:addressObj.country}
+        ,{shortName:'ST',value:addressObj.state}
+        ,{name:'localityName',value:addressObj.city}
+        ,{name:'organizationName',value:addressObj.name}
+        ,{shortName:'OU',value:'foodie'}
+      ];
+
       try {
-        var attrs = [
-          {name:'commonName',value: address}
-          ,{name:'countryName',value:addressObj.country}
-          ,{shortName:'ST',value:addressObj.state}
-          ,{name:'localityName',value:addressObj.city}
-          ,{name:'organizationName',value:addressObj.name}
-          ,{shortName:'OU',value:'foodie'}
-        ];
 
         cert.setSubject(attrs);
         cert.setIssuer(attrs);
         cert.sign(rootPrivateKey);
 
-        result  = {
+        callback({status : 'failure', ca :{
           privateKey  : pki.privateKeyToPem(keys.privateKey),
           publicKey   : pki.publicKeyToPem(keys.publicKey),
           cert        : pki.certificateToPem(cert)
-        }
+        }});
       } catch (e) {
-        result  = { message: e.message }
+        callback({ status: 'failure', message: e.message, data:attrs });
       }
-      callback(result);
     })
   }
   actionError() {
