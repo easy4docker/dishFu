@@ -4,6 +4,7 @@ class Application {
     this.res = res;
     this.next = next;
     this.fs = require('fs');
+    this.forge = require('node-forge');
   }
   save() {
     const me = this;
@@ -36,20 +37,24 @@ class Application {
           :  me.req.body.data[mapping[k]])
     }
     eng.queryInsert(sql, [[values]], (result)=> {
+      result.ca = ca,
       me.res.send(result)
     })
   }
   rootPrivateKey(callback) {
-    this.fs.readFile('/var/_rootCert/privateKey.key', 'utf-8', (err, rootPrivateKey)=> {
+    const me = this;
+    var pki = me.forge.pki;
+    me.fs.readFile('/var/_rootCert/privateKey.key', 'utf-8', (err, privatePem)=> {
+      const rootPrivateKey = pki.privateKeyFromPem(privatePem);
       callback(rootPrivateKey);
     });
   }
   generateCA(callback) {
-    this.rootPrivateKey((rootPrivateKey)=> {
-      const forge = require('node-forge');
-      forge.options.usePureJavaScript = true; 
+    const me = this;
+    me.rootPrivateKey((rootPrivateKey)=> {
+      me.forge.options.usePureJavaScript = true; 
   
-      var pki = forge.pki;
+      var pki = me.forge.pki;
       var keys = pki.rsa.generateKeyPair(2048);
       var cert = pki.createCertificate();
   
