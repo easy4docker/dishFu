@@ -16,7 +16,7 @@ class Application {
   saveToDb(cadata) {
     const me = this;
     if (cadata.status === 'failure') {
-        me.res.send(cadata.status)
+        me.res.send(cadata)
     } else {
       const mapping = {
         roles : 'roles' ,
@@ -57,6 +57,7 @@ class Application {
     const me = this;
     const addressObj = !me.req.body.data ? {} : me.req.body.data.addressObj;
     const address = !me.req.body.data ? '' : me.req.body.data.address;
+    const name = !me.req.body.data ? '' : me.req.body.data.name
     me.rootPrivateKey((rootPrivateKey)=> {
       me.forge.options.usePureJavaScript = true; 
   
@@ -75,8 +76,8 @@ class Application {
         ,{name:'countryName',value:addressObj.country}
         ,{shortName:'ST',value:addressObj.state}
         ,{name:'localityName',value:addressObj.city}
-        ,{name:'organizationName',value:addressObj.name}
-        ,{shortName:'OU',value:'foodie'}
+        ,{name:'organizationName', value:(!me.req.body.data ? '' : me.req.body.data.name)}
+        ,{shortName:'OU',value:(!me.req.body.data ? '' : me.req.body.data.roles)}
       ];
 
       try {
