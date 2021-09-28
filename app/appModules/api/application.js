@@ -14,10 +14,10 @@ class Application {
   }
 
   saveToDb(cadata) {
+    const me = this;
     if (cadata.status === 'failure') {
         me.res.send(cadata.status)
     } else {
-      const me = this;
       const mapping = {
         roles : 'roles' ,
         name : 'name' ,
