@@ -3,6 +3,7 @@ class Application {
     this.req = req;
     this.res = res;
     this.next = next;
+    this.fs = require('fs');
   }
   save() {
     const me = this;
@@ -38,45 +39,45 @@ class Application {
       me.res.send(result)
     })
   }
-
-  generateCA(callback) {
-    const forge = require('node-forge');
-    const fs = require('fs');
-    forge.options.usePureJavaScript = true; 
-
-    var pki = forge.pki;
-    var keys = pki.rsa.generateKeyPair(2048);
-    var cert = pki.createCertificate();
-
-    cert.publicKey = keys.publicKey;
-    cert.serialNumber = '01';
-    cert.validity.notBefore = new Date();
-    cert.validity.notAfter = new Date();
-    cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear()+1);
-
-    var attrs = [
-        {name:'commonName',value:'foodie.com'}
-        ,{name:'countryName',value:'US'}
-        ,{shortName:'ST',value:'CA'}
-        ,{name:'localityName',value:'San Ramon'}
-        ,{name:'organizationName',value:'Test'}
-        ,{shortName:'OU',value:'Test'}
-    ];
-    cert.validity.notBefore = new Date();
-    cert.setSubject(attrs);
-    cert.setIssuer(attrs);
-    cert.sign(keys.privateKey);
-
-    callback({
-      privateKey  : pki.privateKeyToPem(keys.privateKey),
-      publicKey   : pki.publicKeyToPem(keys.publicKey),
-      cert        : pki.certificateToPem(cert)
+  rootPrivateKey(callback) {
+    this.fs.readFile('/var/_rootCert/privateKey.key', 'utf-8', (err, rootPrivateKey)=> {
+      callback(rootPrivateKey);
     });
-    /*
-    var privateKey = pki.privateKeyToPem(keys.privateKey);
-    var pem_pkey = pki.publicKeyToPem(keys.publicKey);
-    var pem_cert = pki.certificateToPem(cert);
-    */
+  }
+  generateCA(callback) {
+    this.rootPrivateKey((rootPrivateKey)=> {
+      const forge = require('node-forge');
+      forge.options.usePureJavaScript = true; 
+  
+      var pki = forge.pki;
+      var keys = pki.rsa.generateKeyPair(2048);
+      var cert = pki.createCertificate();
+  
+      cert.publicKey = keys.publicKey;
+      cert.serialNumber = '01';
+      cert.validity.notBefore = new Date();
+      cert.validity.notAfter = new Date();
+      cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear()+1);
+  
+      var attrs = [
+          {name:'commonName',value:'foodie.com'}
+          ,{name:'countryName',value:'US'}
+          ,{shortName:'ST',value:'CA'}
+          ,{name:'localityName',value:'San Ramon'}
+          ,{name:'organizationName',value:'Test'}
+          ,{shortName:'OU',value:'Test'}
+      ];
+      cert.validity.notBefore = new Date();
+      cert.setSubject(attrs);
+      cert.setIssuer(attrs);
+      cert.sign(rootPrivateKey);
+  
+      callback({
+        privateKey  : pki.privateKeyToPem(keys.privateKey),
+        publicKey   : pki.publicKeyToPem(keys.publicKey),
+        cert        : pki.certificateToPem(cert)
+      });
+    })
   }
   actionError() {
     const me = this;
