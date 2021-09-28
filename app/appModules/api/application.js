@@ -62,7 +62,7 @@ class Application {
       cert.serialNumber = '01';
       cert.validity.notBefore = new Date();
       cert.validity.notAfter = new Date();
-      cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear()+1);
+      cert.validity.notAfter.setFullYear(cert.validity.notBefore.getDate()+15); // give 15 days expiration
   
       var attrs = [
           {name:'commonName',value:'foodie.com'}
