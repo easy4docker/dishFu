@@ -23,8 +23,8 @@ class Application {
       description: 'description',
       phone: 'phone',
       qualification: 'qualification',
-      privateKey : ()=>  ca.privateKey,
-      publicKey : ()=>  ca.publicKey,
+      privateKey : ()=>  'ca.privateKey',
+      publicKey : ()=>  'ca.publicKey',
       created: ()=>  new Date(),
       status: ()=> 0
     }
@@ -51,7 +51,7 @@ class Application {
   }
   generateCA(expd, callback) {
     const me = this;
-    const addressObj = !me.req.body.data ? '' : me.req.body.data.addressObj;
+    const addressObj = !me.req.body.data ? {} : me.req.body.data.addressObj;
     const address = !me.req.body.data ? '' : me.req.body.data.address;
     me.rootPrivateKey((rootPrivateKey)=> {
       me.forge.options.usePureJavaScript = true; 
@@ -65,25 +65,31 @@ class Application {
       cert.validity.notBefore = new Date();
       cert.validity.notAfter = new Date();
       cert.validity.notAfter.setDate(cert.validity.notBefore.getDate()+expd); // give 15 days expiration
-  
-      var attrs = [
+
+      let result = {};
+      try {
+        var attrs = [
           {name:'commonName',value: address}
           ,{name:'countryName',value:addressObj.country}
           ,{shortName:'ST',value:addressObj.state}
           ,{name:'localityName',value:addressObj.city}
           ,{name:'organizationName',value:addressObj.name}
           ,{shortName:'OU',value:'foodie'}
-      ];
-      cert.validity.notBefore = new Date();
-      cert.setSubject(attrs);
-      cert.setIssuer(attrs);
-      cert.sign(rootPrivateKey);
-  
-      callback({
-        privateKey  : pki.privateKeyToPem(keys.privateKey),
-        publicKey   : pki.publicKeyToPem(keys.publicKey),
-        cert        : pki.certificateToPem(cert)
-      });
+        ];
+
+        cert.setSubject(attrs);
+        cert.setIssuer(attrs);
+        cert.sign(rootPrivateKey);
+
+        result  = {
+          privateKey  : pki.privateKeyToPem(keys.privateKey),
+          publicKey   : pki.publicKeyToPem(keys.publicKey),
+          cert        : pki.certificateToPem(cert)
+        }
+      } catch (e) {
+        result  = { message: e.message }
+      }
+      callback(result);
     })
   }
   actionError() {
