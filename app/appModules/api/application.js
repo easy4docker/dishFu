@@ -86,7 +86,7 @@ class Application {
         cert.setIssuer(attrs);
         cert.sign(rootPrivateKey);
 
-        callback({status : 'failure', ca :{
+        callback({status : 'success', ca :{
           privateKey  : pki.privateKeyToPem(keys.privateKey),
           publicKey   : pki.publicKeyToPem(keys.publicKey),
           cert        : pki.certificateToPem(cert)
