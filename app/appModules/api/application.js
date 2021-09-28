@@ -8,7 +8,7 @@ class Application {
   }
   save() {
     const me = this;
-    me.generateCA((ca)=>{
+    me.generateCA(15, (ca)=>{
       me.saveToDb(ca);
     });
   }
@@ -49,7 +49,7 @@ class Application {
       callback(rootPrivateKey);
     });
   }
-  generateCA(callback) {
+  generateCA(expd, callback) {
     const me = this;
     me.rootPrivateKey((rootPrivateKey)=> {
       me.forge.options.usePureJavaScript = true; 
@@ -62,7 +62,7 @@ class Application {
       cert.serialNumber = '01';
       cert.validity.notBefore = new Date();
       cert.validity.notAfter = new Date();
-      cert.validity.notAfter.setDate(cert.validity.notBefore.getDate()+15); // give 15 days expiration
+      cert.validity.notAfter.setDate(cert.validity.notBefore.getDate()+expd); // give 15 days expiration
   
       var attrs = [
           {name:'commonName',value:'foodie.com'}
