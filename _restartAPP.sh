@@ -24,6 +24,7 @@ docker network create \
 
 docker run -v "${FULLDIR}/cronJobs":/var/cronJobs -v "${FULLDIR}/app":/var/app \
     -v "${FULLDIR}/logApp":/var/log \
+    -v ${ROOTDIR}/certs/rootCert:/var/_rootCert \
     -v ${ROOTDIR}/config/app:/var/_config \
     -v ${ROOTDIR}/_ROOTENV:/var/_ROOTENV \
     -v ${FULLDIR}/_appData:/var/_appData \
