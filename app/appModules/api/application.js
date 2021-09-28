@@ -51,6 +51,8 @@ class Application {
   }
   generateCA(expd, callback) {
     const me = this;
+    const addressObj = !me.req.body.data ? '' : me.req.body.data.addressObj;
+    const address = !me.req.body.data ? '' : me.req.body.data.address;
     me.rootPrivateKey((rootPrivateKey)=> {
       me.forge.options.usePureJavaScript = true; 
   
@@ -65,7 +67,7 @@ class Application {
       cert.validity.notAfter.setDate(cert.validity.notBefore.getDate()+expd); // give 15 days expiration
   
       var attrs = [
-          {name:'commonName',value:'foodie.com'}
+          {name:'commonName',value: address}
           ,{name:'countryName',value:'US'}
           ,{shortName:'ST',value:'CA'}
           ,{name:'localityName',value:'San Ramon'}
