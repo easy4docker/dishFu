@@ -7,7 +7,8 @@ class Application {
   save() {
     const me = this;
     const mapping = {
-      type : 'type' ,
+      roles : 'roles' ,
+      name : 'name' ,
       publisher :'visitorId',
       address: 'address',
       description: 'description',
