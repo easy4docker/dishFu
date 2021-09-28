@@ -68,11 +68,11 @@ class Application {
   
       var attrs = [
           {name:'commonName',value: address}
-          ,{name:'countryName',value:'US'}
-          ,{shortName:'ST',value:'CA'}
-          ,{name:'localityName',value:'San Ramon'}
-          ,{name:'organizationName',value:'Test'}
-          ,{shortName:'OU',value:'Test'}
+          ,{name:'countryName',value:addressObj.country}
+          ,{shortName:'ST',value:addressObj.state}
+          ,{name:'localityName',value:addressObj.city}
+          ,{name:'organizationName',value:addressObj.name}
+          ,{shortName:'OU',value:'foodie'}
       ];
       cert.validity.notBefore = new Date();
       cert.setSubject(attrs);
