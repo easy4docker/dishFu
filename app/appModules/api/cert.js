@@ -17,8 +17,12 @@ class Cert {
   requestCertificate() {
     const me = this;
     var pki = me.forge.pki;
-    const cert = pki.certificateFromPem(me.req.body.data.selfcCert)
-    me.res.send(cert.issuer);
+    const cert = pki.certificateFromPem(me.req.body.data.selfcCert);
+    me.rootPrivateKey((rootPrivateKey)=> {
+      cert.sign(rootPrivateKey);
+      me.res.send({issuer: cert.issuer, subject:cert.subject } );
+    })
+   
     // me.res.send(['requestCertificate'])
   }
   actionError() {
