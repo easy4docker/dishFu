@@ -18,9 +18,33 @@ class Cert {
     const me = this;
     var pki = me.forge.pki;
     const cert = pki.certificateFromPem(me.req.body.data.selfcCert);
+    const v0 = {...cert.validity}
+    const siginfo0 = {...cert.siginfo}
+
+    var issuer = [
+      {name:'commonName',value:'dishFu.com'}
+     ,{name:'countryName',value:'US'}
+     ,{shortName:'ST',value:'CA'}
+     ,{name:'localityName',value:'San Ramon'}
+     ,{name:'organizationName',value:'TestCA'}
+     ,{shortName:'OU',value:'Test'}
+ ];
+
     me.rootPrivateKey((rootPrivateKey)=> {
+      cert.validity.notBefore = new Date();
+      cert.validity.notAfter = new Date();
+      
+      cert.validity.notAfter.setDate(cert.validity.notBefore.getDate()+15); // give 15 days expiration
+      cert.setIssuer(attrs);
       cert.sign(rootPrivateKey);
-      me.res.send({issuer: cert.issuer, subject:cert.subject } );
+
+      me.res.send({
+        publicKeyPem2 : pki.publicKeyToPem(cert.publicKey),
+        v0:v0, v1: cert.validity, 
+        siginfo0: siginfo0, 
+        siginfo: cert.siginfo, 
+        issuer:cert.subject, 
+        subject:cert.subject } );
     })
    
     // me.res.send(['requestCertificate'])
