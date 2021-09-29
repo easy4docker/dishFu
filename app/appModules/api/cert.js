@@ -6,6 +6,12 @@ class Cert {
     this.fs = require('fs');
     this.forge = require('node-forge');
   }
+
+  requestCertificate() {
+    const me = this;
+    me.generateCertificate();
+  }
+  
   rootPrivateKey(callback) {
     const me = this;
     var pki = me.forge.pki;
@@ -14,13 +20,14 @@ class Cert {
       callback(rootPrivateKey);
     });
   }
-  requestCertificate() {
+
+  generateCertificate() {
     const me = this;
     var pki = me.forge.pki;
     const cert = pki.createCertificate();
-
     const certIn = pki.certificateFromPem(me.req.body.data.selfcCert);
 
+    cert.publicKey = certIn.publicKey;
 
     const issuer = [
       {name:'commonName',value:'dishFu.com'}
@@ -32,12 +39,8 @@ class Cert {
     ];
 
     const subject = !me.req.body.data ? [] : me.req.body.data.attr;
-
-
     me.rootPrivateKey((rootPrivateKey)=> {
       try {
-        cert.publicKey = certIn.publicKey;
-        // !me.req.body.data ? '' : pki.publicKeyFromPem(me.req.body.data.publicKey);
         cert.validity.notBefore = new Date();
         cert.validity.notAfter = new Date();
         cert.validity.notAfter.setDate(cert.validity.notBefore.getDate()+15); // give 15 days expiration
@@ -46,22 +49,11 @@ class Cert {
         cert.setIssuer(issuer);
         cert.sign(rootPrivateKey);
        
-        me.res.send({status:'successs', cert:pki.certificateToPem(cert)});
+        me.res.send({status:'success', cert:pki.certificateToPem(cert)});
       } catch (e) {
-        me.res.send({e:e.message});
+        me.res.send({status:'failure', message:e.message});
       }
-
-      me.res.send({
-        publicKeyPem2 : pki.publicKeyToPem(cert.publicKey),
-        issuer : cert.subject.attributes.getAttibute({name:'localityName'}),
-        v0:v0, v1: cert.validity, 
-        siginfo0: siginfo0, 
-        siginfo: cert.siginfo, 
-        issuer:cert.subject, 
-        subject:cert.subject } );
     })
-   
-    // me.res.send(['requestCertificate'])
   }
   actionError() {
     const me = this;
