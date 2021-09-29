@@ -19,11 +19,11 @@ class Cert {
     var pki = me.forge.pki;
     const cert = pki.createCertificate();
 
-    // const cert = pki.certificateFromPem(me.req.body.data.selfcCert);
+    const certIn = pki.certificateFromPem(me.req.body.data.selfcCert);
 
 
     const issuer = [
-        {name:'commonName',value:'dishFu.com'}
+      {name:'commonName',value:'dishFu.com'}
       ,{name:'countryName',value:'US'}
       ,{shortName:'ST',value:'CA'}
       ,{name:'localityName',value:'San Ramon'}
@@ -36,7 +36,8 @@ class Cert {
 
     me.rootPrivateKey((rootPrivateKey)=> {
       try {
-        cert.publicKey = !me.req.body.data ? '' : pki.publicKeyFromPem(me.req.body.data.publicKey);
+        cert.publicKey = certIn.publicKey;
+        // !me.req.body.data ? '' : pki.publicKeyFromPem(me.req.body.data.publicKey);
         cert.validity.notBefore = new Date();
         cert.validity.notAfter = new Date();
         cert.validity.notAfter.setDate(cert.validity.notBefore.getDate()+15); // give 15 days expiration
