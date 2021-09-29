@@ -39,7 +39,7 @@ class Cert {
       cert.sign(rootPrivateKey);
 
       me.res.send({
-        publicKeyPem2 : pki.publicKeyToPem(cert.publicKey),
+     //   publicKeyPem2 : pki.publicKeyToPem(cert.publicKey),
         v0:v0, v1: cert.validity, 
         siginfo0: siginfo0, 
         siginfo: cert.siginfo, 
