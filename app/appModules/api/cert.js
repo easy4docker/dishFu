@@ -16,7 +16,7 @@ class Cert {
   }
   requestCertificate() {
     const me = this;
-    var pki = forge.pki;
+    var pki = me.forge.pki;
     const cert = pki.certificateFromPem(me.req.body.data.selfcCert)
     me.res.send(['cert.validity']);
     // me.res.send(['requestCertificate'])
