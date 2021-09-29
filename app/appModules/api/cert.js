@@ -17,29 +17,42 @@ class Cert {
   requestCertificate() {
     const me = this;
     var pki = me.forge.pki;
-    const cert = pki.certificateFromPem(me.req.body.data.selfcCert);
-    const v0 = {...cert.validity}
-    const siginfo0 = {...cert.siginfo}
+    const cert = pki.createCertificate();
 
-    var issuer = [
-      {name:'commonName',value:'dishFu.com'}
-     ,{name:'countryName',value:'US'}
-     ,{shortName:'ST',value:'CA'}
-     ,{name:'localityName',value:'San Ramon'}
-     ,{name:'organizationName',value:'TestCA'}
-     ,{shortName:'OU',value:'Test'}
- ];
+    // const cert = pki.certificateFromPem(me.req.body.data.selfcCert);
+
+
+    const issuer = [
+        {name:'commonName',value:'dishFu.com'}
+      ,{name:'countryName',value:'US'}
+      ,{shortName:'ST',value:'CA'}
+      ,{name:'localityName',value:'San Ramon'}
+      ,{name:'organizationName',value:'TestCA'}
+      ,{shortName:'OU',value:'Test'}
+    ];
+
+    const subject = !me.req.body.data ? [] : me.req.body.data.attr;
+
 
     me.rootPrivateKey((rootPrivateKey)=> {
-      cert.validity.notBefore = new Date();
-      cert.validity.notAfter = new Date();
-      
-      cert.validity.notAfter.setDate(cert.validity.notBefore.getDate()+15); // give 15 days expiration
-      cert.setIssuer(attrs);
-      cert.sign(rootPrivateKey);
+      try {
+        cert.publicKey = !me.req.body.data ? '' : pki.publicKeyFromPem(me.req.body.data.publicKey);
+        cert.validity.notBefore = new Date();
+        cert.validity.notAfter = new Date();
+        cert.validity.notAfter.setDate(cert.validity.notBefore.getDate()+15); // give 15 days expiration
+        
+        cert.setSubject(subject);
+        cert.setIssuer(issuer);
+        cert.sign(rootPrivateKey);
+       
+        me.res.send({status:'successs', cert:pki.certificateToPem(cert)});
+      } catch (e) {
+        me.res.send({e:e.message});
+      }
 
       me.res.send({
-     //   publicKeyPem2 : pki.publicKeyToPem(cert.publicKey),
+        publicKeyPem2 : pki.publicKeyToPem(cert.publicKey),
+        issuer : cert.subject.attributes.getAttibute({name:'localityName'}),
         v0:v0, v1: cert.validity, 
         siginfo0: siginfo0, 
         siginfo: cert.siginfo, 
