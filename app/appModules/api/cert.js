@@ -18,7 +18,7 @@ class Cert {
     const me = this;
     var pki = me.forge.pki;
     const cert = pki.certificateFromPem(me.req.body.data.selfcCert)
-    me.res.send(['cert.validity']);
+    me.res.send([cert.validity]);
     // me.res.send(['requestCertificate'])
   }
   actionError() {
