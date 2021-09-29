@@ -23,6 +23,7 @@ module.exports = (req, res, next)=> {
     case 'application':
     case 'community':
     case 'auth':
+    case 'cert':
     case 'ad':
     case 'menu':
       appModule(req.params.module, req, res, next);

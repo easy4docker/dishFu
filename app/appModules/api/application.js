@@ -13,6 +13,8 @@ class Application {
     });
   }
 
+  
+
   saveToDb(cadata) {
     const me = this;
     if (cadata.status === 'failure') {
