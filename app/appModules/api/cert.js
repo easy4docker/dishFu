@@ -5,8 +5,8 @@ class Cert {
     this.next = next;
   }
   requestCertificate() {
-    
-    this.res.send('requestCertificate')
+    const me = this;
+    me.res.send(['requestCertificate'])
   }
   actionError() {
     const me = this;
