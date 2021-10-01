@@ -7,7 +7,7 @@ RUN apt-get -y install git
 RUN apt-get install -y cron
 RUN apt-get -y install vim
 # RUN npm install pm2 -g > /dev/null 2>&1
-RUN npm install forever -g
+# RUN npm install forever -g
 #COPY cronJobs /var/cronJobs
 #COPY app /var/app
 
