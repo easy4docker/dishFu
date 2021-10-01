@@ -10,7 +10,7 @@ mkdir -p ${FULLDIR}/logApp
 # cp -R ${ROOTDIR}/config/app/* ${FULLDIR}/app/config/
 
 docker stop dishfu-app-container && docker rm dishfu-app-container
-# ---  && docker image prune -f
+
 
 MAIN_NET="33.33.33"
 MAIN_IP="33.33.33.254"
