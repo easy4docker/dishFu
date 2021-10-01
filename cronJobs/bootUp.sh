@@ -7,4 +7,5 @@ npm install
 # npm start &
 #cron start &
 #echo "==== boot up ==== $(date -u ==="
+cron start
 npm start ./bin/www
